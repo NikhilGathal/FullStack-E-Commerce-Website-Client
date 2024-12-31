@@ -1,0 +1,93 @@
+.heading-container {
+  --background-color: white;
+  --text-color: black;
+  --elements-color: white;
+    position: relative;
+  }
+
+  .heading-container.dark {
+    --background-color: #2c4760;
+    --text-color: white;
+    --elements-color: hsl(209, 23%, 22%);
+ 
+  }
+  
+  .heading {
+    cursor: pointer; /* Adds a pointer to indicate interactivity */
+  }
+
+  .heading:hover 
+  {
+    color: #a870f1;
+  }
+  
+  .suggestion-box {
+    position: absolute;
+    top:50px; /* Positions the box right below the heading */
+    left: -16px;
+    background-color: var(--background-color); /* Background color for the suggestion box */
+    color: var(--text-color); /* Text color */
+    padding: 6px;
+    font-size: 15px;
+    font-weight: 550;
+    border-radius: 4px;
+    box-shadow:0px 0px 5px 3px rgba(0, 0, 0, 0.2); /* Adds shadow for a popup effect */
+    display: none;
+    z-index: 10; /* Ensures the box appears above other content */
+    width: max-content; /* Adjust width based on content */
+  }
+
+
+
+  .suggestion-box p 
+  {
+    cursor: pointer;
+    margin: 7px;
+  }
+  
+  .heading-container:hover .suggestion-box {
+    display: block; /* Shows the box on hover */
+  }
+  @media  (max-width: 697px) {
+    .suggestion-box {
+      top: 23px !important;
+      left: -7px !important;
+      padding: 2px !important;
+      font-size: 9px !important ;
+    }
+    .suggestion-box p 
+    {
+      font-size: 8px !important ;
+    }
+  }
+  
+  @media  (max-width: 437px) {
+    .suggestion-box {
+      top: 22px !important;
+      left: -6px !important;
+      padding: 1px !important;
+      font-size: 9px !important ;
+    }
+    .suggestion-box p 
+    {
+      margin: 5px;
+      font-size: 6.1px !important ;
+    }
+  }
+
+  @media(max-width:1024px)
+  {
+    .suggestion-box 
+    { top: 47px;   
+        padding: 5px;
+      font-size: 11px;
+    }
+  }
+
+  @media (min-width: 697px) and (max-width: 805px)
+  {
+    .suggestion-box 
+    { top: 37px;   
+    }
+  }
+  

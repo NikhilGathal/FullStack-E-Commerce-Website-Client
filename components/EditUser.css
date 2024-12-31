@@ -1,0 +1,87 @@
+.edit-user-modal {
+    --background-color: white;
+    --text-color: black;
+    --elements-color: white;
+    margin-top:75px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   /* margin-bottom: 15px; */
+  
+   
+  }
+  .editu 
+  {
+    margin: 0;
+    padding: 16px;
+  }
+  .edit-user-modal.dark 
+  {
+    --background-color: #2c4760;
+    --text-color: white;
+    --elements-color: hsl(209, 23%, 22%);
+  }
+  
+  .edit-user-modal-content {
+    /* border: 2px solid red; */
+    background-color:var(--background-color);
+    padding: 17px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+margin: 0;
+    border: 2px solid rgb(220, 210, 210);
+  }
+
+  .edit-user-modal-content h2 
+  {
+    margin: 0;
+    margin-bottom: 25px;
+  }
+  
+  .edit-form {
+  
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    /* margin-bottom: 15px; */
+  }
+  
+  .form-group label {
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+  }
+  
+  .save-button {
+    font-size: 13.5px;
+  font-family: inherit;
+  padding: 10px;
+  cursor: pointer;
+  background-color: var(--elements-color);
+  color: var(--text-color);
+  transition: all 0.4s ease-in-out;
+  border-radius: 0.575rem;
+  }
+  
+  .save-button:hover {
+    color: var(--text-color);
+    background-color: #898989
+  }
+  

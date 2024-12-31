@@ -1,0 +1,172 @@
+/* General styles */
+
+.cat-cat {
+  padding-inline: 16px;
+  margin-top: 100px;
+  --background-color: white;
+  --text-color: black;
+}
+
+.cat-cat.dark {
+  --background-color: #2c4760;
+  --text-color: white;
+}
+
+.cat-mb-12 {
+  margin-bottom: 3rem;
+}
+
+.cat-text-center {
+  text-align: center;
+}
+
+.cat-text-primary {
+  color: #007bff; /* Adjust the color to your primary color */
+}
+
+.cat-font-bold {
+  font-weight: 700;
+}
+
+.cat-font-semibold {
+  font-weight: 600;
+}
+
+.cat-font-semibold:hover {
+  text-decoration: underline;
+}
+
+.cat-text-sm {
+  font-size: 0.875rem;
+}
+
+.cat-text-xs {
+  font-size: 0.75rem;
+}
+
+.cat-text-gray-400 {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.cat-text-gray-600 {
+  color: #4b5563;
+}
+
+/* Container with responsive padding */
+.cat-container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  color: var(--text-color);
+
+}
+
+@media (min-width: 1200px) {
+  .cat-container {
+    max-width: 1200px;
+  }
+}
+
+/* Grid Styles */
+.cat-gridc {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(1, 1fr); /* Default to 1 column */
+}
+
+@media (min-width: 640px) {
+  .cat-gridc {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+  }
+}
+
+@media (min-width: 768px) {
+  .cat-gridc {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .cat-gridc {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on large screens */
+  }
+
+  .cat-flex button {
+    font-size: 14.5px !important;
+    padding-inline:21px !important ;
+    padding-block:11.5px !important ;
+  }
+
+  .cat-text-3xl
+  {
+    margin-bottom: 40px;
+  }
+  .cat-container .cat-place-items-center
+  {
+    margin-top: 65px;
+  }
+  .cat-container .cat-flex button
+  {
+    margin-top: 45px;
+  }
+
+}
+
+.cat-place-items-center {
+  margin-top: 50px;
+  place-items: center;
+}
+
+.cat-flex {
+  display: flex;
+  justify-content: center;
+}
+
+.cat-flex button {
+  margin-top: 25px;
+  font-size: 13.5px;
+  font-family: inherit;
+  padding: 10px;
+  cursor: pointer;
+  background-color: var(--elements-color);
+  color: var(--text-color);
+  transition: all 0.4s ease-in-out;
+  border-radius: 0.575rem;
+}
+
+.cat-flex button:hover {
+  color: var(--text-color);
+  background-color: #898989;
+}
+
+/* Card Styles */
+.cat-space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+.cat-space-y-3 img {
+  height: 220px;
+  width: 150px;
+  object-fit: cover;
+  border-radius: 0.375rem;
+}
+
+.cat-items-center {
+  align-items: center;
+}
+
+.cat-gap-1 {
+  gap: 0.25rem;
+}
+
+.cat-mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cat-max-w-\[600px\] {
+  max-width: 600px;
+}

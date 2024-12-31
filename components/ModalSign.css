@@ -1,0 +1,148 @@
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8); 
+  padding-left: 16px; 
+  padding-right: 16px;
+
+  z-index: 10000;
+  
+}
+.signup-role-container {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 10px; 
+}
+
+.signup-role-container input[type='checkbox'] {
+  margin-right: 40px; 
+}
+.check {
+  width: 60%;
+}
+
+
+.hidden {
+  display: none;
+}
+
+
+.modal-box {
+  max-width: 30rem; 
+  flex-grow: 1;
+  background-color: white;
+  border-radius: 12px; 
+  padding: 20px; 
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05); 
+}
+
+
+.modal-heading {
+  font-size: 1.25rem; 
+  font-weight: bold;
+}
+
+
+.modal-form {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  display: flex;
+  flex-direction: column; 
+  flex-wrap: wrap;
+  gap: 16px; 
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  padding-left: 16px; 
+  padding-right: 16px;
+}
+
+
+.modal-input {
+  border-radius: 8px; 
+  border: 1px solid #4b5563; 
+  padding: 8px; 
+  max-width: 95%;
+  margin-top: 5px;
+}
+
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+}
+
+
+.cancel-button {
+  background-color: #3e86f2; 
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: rgba(209, 213, 219, 0.8); 
+}
+
+.cancel-button:active {
+  background-color: rgba(209, 213, 219, 0.6); 
+}
+
+
+.signin-button {
+  background-color: #3e86f2; 
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  margin-right: 20px;
+  color: white;
+}
+
+.signin-button:hover {
+  color: black;
+  background-color: rgba(147, 197, 253, 0.8); 
+}
+
+.signin-button:active {
+  background-color: rgba(147, 197, 253, 0.6); 
+}
+
+.already {
+  display: flex;
+  margin: 0;
+  align-items: center;
+  gap: 8px;
+}
+.already p {
+  font-size: 13px;
+  margin: 0;
+}
+
+.already h1 {
+  margin: 0;
+  font-size: 15px;
+}
+.already h1:hover 
+{
+  color: #a870f1;
+  text-decoration: underline;
+}

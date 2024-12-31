@@ -1,0 +1,175 @@
+
+
+
+/* General Styles */
+.update-head {
+  margin-top: 90px;
+  text-align: center;
+  font-size: 2rem;
+  color: var(--text-color);
+}
+
+.mode1 {
+  --background-color: rgb(245, 240, 240);
+  --text-color: black;
+  --elements-color: white;
+}
+
+.mode1.dark {
+  --background-color: #2c4760;
+  --text-color: white;
+  --elements-color: hsl(209, 23%, 22%);
+}
+
+.update-product-container {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.update-product-container-content {
+  border: 2px solid rgb(220, 210, 210);
+  max-width: 800px;
+  width: 100%;
+  padding: 25px;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.update-product-container-content select
+{
+  display: block;
+  width: 99%;
+  padding: 10px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 0;
+  color: var(--text-color);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+input, textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  width: 97%; /* Ensures all inputs and textareas take almost full width */
+}
+
+input:focus, textarea:focus {
+  border-color: #4A90E2;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.addnew select 
+{
+  font-size: 16px;
+  /* font-weight: bold; */
+}
+
+.save {
+  font-size: 14px;
+  background-color: var(--elements-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Ensures the button takes the full width */
+}
+
+.save:hover {
+  background-color: #898989;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .update-product-container-content {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  input, textarea {
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .save {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .update-product-container {
+    padding: 15px;
+  }
+
+  .update-product-container-content {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  input, textarea {
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .save {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .update-product-container {
+    padding: 10px;
+  }
+
+  .update-product-container-content {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  label, input, button {
+    font-size: 0.9rem;
+  }
+
+  input, textarea {
+    padding: 6px;
+  }
+
+  .save {
+    font-size: 11px;
+    padding: 8px;
+  }
+}

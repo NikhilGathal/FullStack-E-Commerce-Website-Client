@@ -1,0 +1,40 @@
+main .shimmer-card {
+    --shimmer-color: hsl(0, 0%, 78%);
+  }
+  
+  main.dark .shimmer-card {
+    --shimmer-color: hsl(208, 21%, 34%);
+  }
+  
+  .shimmer-card {
+    background-color: var(--elements-color);
+  }
+  
+  .shimmer-card .flag-container {
+    /* height: 200px; */
+    background-color: var(--shimmer-color);
+  }
+  
+  .shimmer-card .card-title {
+    height: 32px;
+    background-color: var(--shimmer-color);
+    border-radius: 4px;
+  }
+  
+  .shimmer-card p {
+    height: 25px;
+    width: 90px;
+    background-color: var(--shimmer-color);
+  }
+
+  .shimmer-card button {
+    height: 35px;
+    /* border-radius: 4px; */
+    border: none;
+    background-color: var(--shimmer-color);
+  }
+  
+  .price-rating-container 
+  {
+    margin-top: 0;
+  }
