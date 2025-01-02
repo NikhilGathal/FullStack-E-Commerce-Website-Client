@@ -4,7 +4,10 @@ import { Link, useLocation } from 'react-router-dom'
 
 const OrderConfirmation = () => {
   const location = useLocation()
-  const { username, cartItems, totalPrice } = location.state || {}
+  const { username, cartItems, totalPrice ,order_Id} = location.state || {}
+
+  console.log(order_Id);
+  
 
   // Fetch details (common for user and admin)
   const fetchDetailsFromDB = async (username) => {
@@ -38,7 +41,7 @@ const OrderConfirmation = () => {
     if (userDetails && adminDetails) {
       const { email, phone, address } = userDetails
       const orderDate = new Date()
-      const order_id = `OD${Date.now()}`
+      // const order_id = `OD${Date.now()}`
 
       const products = cartItems.map((item) => ({
         product_name: item.title,
@@ -64,7 +67,7 @@ const OrderConfirmation = () => {
         user_phone: phone,
         user_address: address,
         order_date: orderDate.toLocaleDateString(),
-        order_id,
+        order_Id,
         productDetails: productDetailsString,
         totalOrderPrice: parseFloat(totalPrice || 0).toFixed(2),
         completeTotal,
@@ -89,7 +92,7 @@ const OrderConfirmation = () => {
       const adminEmailParams = {
         ...emailParams,
         admin_email: adminDetails.email,
-        subject: `New Order Received: ${order_id}`,
+        subject: `New Order Received: ${order_Id}`,
         Name: 'Shopee',
       }
 

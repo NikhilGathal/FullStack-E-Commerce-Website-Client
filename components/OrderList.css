@@ -215,7 +215,7 @@
   /* align-items: center; */
   justify-content: center;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   background-color: var(--background-color);
 }
 
@@ -248,13 +248,18 @@
 .ord {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  /* gap: 8px; */
 }
 
 .ord span {
   display: block;
-  text-align: left;
-  margin: 3px 0;
+  /* text-align: left; */
+  margin: 4px 0;
+  font-size: 0.9em;
+}
+.username-column p 
+{
+  margin: 4px 0;
 }
 
 .user-details-column p {
@@ -262,10 +267,18 @@
   font-size: 0.9em;
   color: var(--text-color);
 }
-
+.order-column p {
+  margin: 4px 0;
+  font-size: 0.9em;
+  color: var(--text-color);
+}
 .admin {
   font-size: 45px;
   color: var(--text-color);
+}
+.grid-row .amp 
+{
+  font-size: 0.9em;
 }
 
 @media (max-width: 983px) {

@@ -20,11 +20,11 @@ export default function App() {
   const [dark, isdark] = useState(
     JSON.parse(localStorage.getItem('isdarkmode'))
   )
- 
+
   const [isAdmin, setIsAdmin] = useState(() => {
-    const storedIsAdmin = localStorage.getItem('isAdmin');
-    return storedIsAdmin === 'true';  // Check if stored value is 'true'
-  });
+    const storedIsAdmin = localStorage.getItem('isAdmin')
+    return storedIsAdmin === 'true' // Check if stored value is 'true'
+  })
   // localStorage.setItem('isAdmin' , isAdmin)
   // console.log('value for isadmin ' ,isAdmin);
   const [checkuserlogin, setcheckuserlogin] = useState(false)
@@ -41,12 +41,12 @@ export default function App() {
         const cartKey = 'cartItems' // Key for localStorage
 
         if (isAdmin) {
-          return
+          console.log('Admin is logged in')
+          return;
         }
 
         if (!username && !isAdmin) {
-          // console.log('No user is logged in. Fetching cart from localStorage.')
-
+          console.log('No user is logged in. Fetching cart from localStorage.')
           // Fetch cart items from localStorage for guest user
           const storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
           dispatch(loadCartItemsFromLocal(storedCart))
@@ -193,8 +193,6 @@ export default function App() {
       document.body.classList.remove('dark')
     }
   }, [dark])
-
-  
 
   return (
     <>

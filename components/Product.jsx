@@ -119,7 +119,7 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
       dispatch(addCartItem({ productId}))
       console.log('Added item to localStorage cart:', storedCart)
     } else {
-      console.log(userId)
+      // console.log(userId)
       try {
         // Step 1: Add item to the cart on the backend
         const response = await fetch(

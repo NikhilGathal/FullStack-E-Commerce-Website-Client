@@ -107,6 +107,7 @@ export default function Cart() {
               <div className="cart-header cart-item-container">
                 <button
                   onClick={() => {
+                    const order_Id = 'OD' + Date.now()
                     const username = localStorage.getItem('username')
                     const admin = localStorage.getItem('adminname')
 
@@ -126,16 +127,16 @@ export default function Cart() {
 
                     const requestBody = {
                       username: username,
-                     
-                  };
-                  
-                  fetch('http://localhost:8080/api/orders/place', {
+                      order_Id: order_Id,
+                    }
+
+                    fetch('http://localhost:8080/api/orders/place', {
                       method: 'POST',
                       headers: {
-                          'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                       },
-                      body: JSON.stringify(requestBody)
-                  })
+                      body: JSON.stringify(requestBody),
+                    })
                       .then((response) => response.text()) // Parse the response as text since it's just a message
                       .then((data) => {
                         if (data === 'Order placed successfully!') {
@@ -145,7 +146,8 @@ export default function Cart() {
                             state: {
                               username,
                               cartItems,
-                              totalPrice, // Ensure totalPrice is calculated properly
+                              totalPrice,
+                              order_Id, // Ensure totalPrice is calculated properly
                             },
                           })
                         } else {

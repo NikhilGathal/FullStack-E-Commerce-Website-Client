@@ -125,15 +125,15 @@ export default function Header({
 
     // dispatch( fetchCartItemsdata())
 
-    let userlogin = localStorage.getItem('username')
-    let cartKey = userlogin ? `${userlogin}cart` : 'cartItems'
-    let wishKey = userlogin ? `${userlogin}wish` : 'wishItems'
+    // let userlogin = localStorage.getItem('username')
+    // let cartKey = userlogin ? `${userlogin}cart` : 'cartItems'
+    // let wishKey = userlogin ? `${userlogin}wish` : 'wishItems'
 
-    let storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
-    dispatch(loadCartItemsFromLocal(storedCart))
+    // let storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
+    // dispatch(loadCartItemsFromLocal(storedCart))
 
-    let storedWish = JSON.parse(localStorage.getItem(wishKey)) || []
-    dispatch(loadWishItem(storedWish))
+    // let storedWish = JSON.parse(localStorage.getItem(wishKey)) || []
+    // dispatch(loadWishItem(storedWish))
 
     // dispatch(fetchProducts())
     // fetch('https://fakestoreapi.com/products')
