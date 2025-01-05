@@ -64,10 +64,16 @@ export default function ModalSign({ issign, setissign, setsignname ,setislog}) {
         }),
       })
   
+      
       const result = await response.json()
   
       if (response.ok) {
         alert('Sign Up successful! Please proceed to login.')
+
+        if (userData.isAdmin) {
+          localStorage.setItem('adminname', userData.username)
+        }
+
         setsignname(true)
         setissign(false)
         resetForm()

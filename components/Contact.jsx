@@ -62,7 +62,7 @@ const ContactUs = () => {
       {!isFormRoute && (
         <main className="contact-main">
           <div className={`contact-us-container ${dark ? 'dark' : ''}`}>
-            <h1>Contact Us</h1>
+            <h1 className='cnt'>Contact Us</h1>
             <p style={{ textAlign: 'center' }}>
               If you have any questions or feedback, please reach out to us!
             </p>

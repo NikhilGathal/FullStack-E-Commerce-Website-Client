@@ -24,6 +24,12 @@
   background-color:var(--background-color);
   margin-top: 115px;
 }
+
+.contact-us-container .cnt 
+{
+  margin-top: -10px;
+}
+
 .about-us-container {
   padding-inline: 25px;
   padding-bottom: 20px;

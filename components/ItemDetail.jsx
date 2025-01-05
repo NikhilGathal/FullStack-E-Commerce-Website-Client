@@ -16,28 +16,71 @@ const ItemDetail = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [, dark] = useOutletContext()
+ const[pdt ,setpdt] = useState([])
+
+
+  // useEffect(() => {
+  //   // Fetch item details from localStorage
+  //   const fetchItemFromLocalStorage = () => {
+  //     try {
+
+  //       fetch('http://localhost:8080/api/products')
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         // console.log(data);
+          
+  //         setpdt(data)
+  //         console.log(pdt);
+          
+  //       })
+  //         // JSON.parse(localStorage.getItem('productsList')) || []
+  //       const product = pdt.find((p) => p.id === productId) // Find the product by ID
+  //       if (!product) {
+  //         throw new Error('Product not found')
+  //       }
+  //       setItem(product) // Set the product as the state
+  //       setLoading(false) // Set loading to false
+  //     } catch (err) {
+  //       setError(err.message) // Handle error
+  //       setLoading(false) // Set loading to false
+  //     }
+  //   }
+
+  //   fetchItemFromLocalStorage()
+  // }, [productId])
 
   useEffect(() => {
-    // Fetch item details from localStorage
+    // Fetch item details from the backend API
     const fetchItemFromLocalStorage = () => {
       try {
-        const productsList =
-          JSON.parse(localStorage.getItem('productsList')) || []
-        const product = productsList.find((p) => p.id === productId) // Find the product by ID
+        fetch('http://localhost:8080/api/products')
+          .then((res) => res.json())
+          .then((data) => {
+            // Update pdt state with fetched data
+            setpdt(data);
+          });
 
-        if (!product) {
-          throw new Error('Product not found')
-        }
-        setItem(product) // Set the product as the state
-        setLoading(false) // Set loading to false
       } catch (err) {
-        setError(err.message) // Handle error
-        setLoading(false) // Set loading to false
+        setError(err.message); // Handle error
+        setLoading(false); // Set loading to false
       }
-    }
+    };
 
-    fetchItemFromLocalStorage()
-  }, [productId])
+    fetchItemFromLocalStorage();
+  }, []); // Only run once on mount
+
+  useEffect(() => {
+    // console.log(pdt);
+    
+    if (pdt.length > 0) {
+      const product = pdt.find((p) => p.id === productId); // Find the product by ID
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      setItem(product); // Set the product as the state
+      setLoading(false); // Set loading to false
+    }
+  }, [pdt, productId]); // Runs when pdt is updated
 
   if (loading)
     return (

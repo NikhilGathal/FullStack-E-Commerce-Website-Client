@@ -101,99 +101,139 @@ const slice = createSlice({
 //   }
 // };
 
+// export const fetchProductdata = () => (dispatch) => {
+//   // Fetch data from the database first
+//   fetch('http://localhost:8080/api/products')
+//     .then((res) => res.json())
+//     .then((data) => {
+//       if (data && data.length > 0) {
+//         // If products exist in the database, use them
+//         // console.log('Data fetched from database:', data);
+//         dispatch(updateAllProducts(data));
+//         // Optionally, store it in localStorage if needed for offline use
+//         localStorage.setItem('productsList', JSON.stringify(data));
+//       } else {
+//         // If no products exist in the database, use localStorage
+//         const localData = JSON.parse(localStorage.getItem('productsList'));
+//         if (localData && localData.length > 0) {
+//           console.log('Data fetched from localStorage:', localData);
+//           fetch('http://localhost:8080/api/products/saveall', {
+//             method: 'POST',
+//             headers: {
+//               'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify(localData),
+//           })
+//             .then((response) => {
+//               if (response.ok) {
+//                 console.log('Data sent to the backend successfully');
+//               } else {
+//                 console.error('Failed to send data to the backend');
+//               }
+//             })
+//           dispatch(updateAllProducts(localData));
+//         } else {
+//           // If no data in both database and localStorage, fetch from external API
+//           fetch('https://fakestoreapi.com/products')
+//             .then((res) => res.json())
+//             .then((apiData) => {
+//               // Update Redux state and localStorage with the fetched data
+//               console.log('Data fetched from external API:', apiData);
+//               dispatch(updateAllProducts(apiData));
+//               localStorage.setItem('productsList', JSON.stringify(apiData));
+
+//               // Send the fetched data to the Spring Boot backend to save
+//               fetch('http://localhost:8080/api/products/saveall', {
+//                 method: 'POST',
+//                 headers: {
+//                   'Content-Type': 'application/json',
+//                 },
+//                 body: JSON.stringify(apiData),
+//               })
+//                 .then((response) => {
+//                   if (response.ok) {
+//                     console.log('Data sent to the backend successfully');
+//                   } else {
+//                     console.error('Failed to send data to the backend');
+//                   }
+//                 })
+
+
+//                 .catch((error) => {
+//                   console.error('Error sending data to the backend:', error);
+//                 });
+//             })
+//             .catch((error) => {
+//               console.error('Error fetching data from external API:', error);
+//               dispatch(fetchProductsError());
+//             });
+//         }
+//       }
+//     })
+//     .catch((error) => {
+//       console.error('Error fetching data from the database:', error);
+//       dispatch(fetchProductsError());
+//     });
+// };
+
+
+
 export const fetchProductdata = () => (dispatch) => {
-  // Fetch data from the database first
+  // First, attempt to fetch data from the database
   fetch('http://localhost:8080/api/products')
     .then((res) => res.json())
     .then((data) => {
       if (data && data.length > 0) {
-        // If products exist in the database, use them
-        // console.log('Data fetched from database:', data);
+        // Use data fetched from the database
+        console.log('Data fetched from database:', data);
         dispatch(updateAllProducts(data));
-        // Optionally, store it in localStorage if needed for offline use
-        localStorage.setItem('productsList', JSON.stringify(data));
       } else {
-        // If no products exist in the database, use localStorage
-        const localData = JSON.parse(localStorage.getItem('productsList'));
-        if (localData && localData.length > 0) {
-          console.log('Data fetched from localStorage:', localData);
+        // If no data found in the database, use local data (productsList)
+        console.log('No data in the database, using local data:', productsList);
+        dispatch(updateAllProducts(productsList));
 
-
-
-          fetch('http://localhost:8080/api/products/saveall', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(localData),
+        // Send the local data to the backend to save it
+        fetch('http://localhost:8080/api/products/saveall', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(productsList),
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log('Local data sent to the backend successfully');
+            } else {
+              console.error('Failed to send local data to the backend');
+            }
           })
-            .then((response) => {
-              if (response.ok) {
-                console.log('Data sent to the backend successfully');
-              } else {
-                console.error('Failed to send data to the backend');
-              }
-            })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          dispatch(updateAllProducts(localData));
-        } else {
-          // If no data in both database and localStorage, fetch from external API
-          fetch('https://fakestoreapi.com/products')
-            .then((res) => res.json())
-            .then((apiData) => {
-              // Update Redux state and localStorage with the fetched data
-              console.log('Data fetched from external API:', apiData);
-              dispatch(updateAllProducts(apiData));
-              localStorage.setItem('productsList', JSON.stringify(apiData));
-
-              // Send the fetched data to the Spring Boot backend to save
-              fetch('http://localhost:8080/api/products/saveall', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(apiData),
-              })
-                .then((response) => {
-                  if (response.ok) {
-                    console.log('Data sent to the backend successfully');
-                  } else {
-                    console.error('Failed to send data to the backend');
-                  }
-                })
-
-
-                .catch((error) => {
-                  console.error('Error sending data to the backend:', error);
-                });
-            })
-            .catch((error) => {
-              console.error('Error fetching data from external API:', error);
-              dispatch(fetchProductsError());
-            });
-        }
+          .catch((error) => {
+            console.error('Error sending local data to the backend:', error);
+          });
       }
     })
     .catch((error) => {
       console.error('Error fetching data from the database:', error);
+      // If database fetch fails, fallback to local data
+      console.log('Using local data due to database error:', productsList);
+      dispatch(updateAllProducts(productsList));
       dispatch(fetchProductsError());
     });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const getAllProducts = (state) => state.products.list
 export const getProductLoadingState = (state) => state.products.loading

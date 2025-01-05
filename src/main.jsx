@@ -68,7 +68,10 @@ const router = createBrowserRouter([
         path: '/carousel/:carousel',
         element: <CarouselPage />,
       },
-
+      {
+        path:"/search/:searchTerm",
+          element: <CarouselPage />,
+        },
       {
         path: '/Admin',
         element: <AdminDashBoard />,

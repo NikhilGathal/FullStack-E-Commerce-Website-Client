@@ -69,7 +69,7 @@ export default function ModalLogin({
           setIsAdmin(data.admin)
           if (data.admin) {
             setislog(false)
-            localStorage.setItem('adminname', loginData.username) // Store admin username in localStorage
+            // localStorage.setItem('adminname', loginData.username) // Store admin username in localStorage
             localStorage.setItem('isAdmin', 'true') // Store 'true' as string in localStorage
             setIsAdmin(true) // Update state to true
           } else {

@@ -807,18 +807,8 @@ select option:hover {
 }
 
 @media (max-width: 730px) {
-
   .header-contents .ham h3 {
     font-size: 12px;
-  }
-  .suggestion-box-log {
-    left: -10px;
-    top: 20px;
-    padding: 12px;
-  }
-  .suggestion-box-log p {
-    font-size: 12px;
-   
   }
 }
 
@@ -828,7 +818,7 @@ select option:hover {
     left: -15px;
     top: 19px;
     padding: 7px;
-    padding-inline: 14.5px;
+    padding-inline: 14px;
     z-index: 10;
   }
   .cart-container {
