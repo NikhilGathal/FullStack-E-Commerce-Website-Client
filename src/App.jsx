@@ -28,6 +28,8 @@ export default function App() {
   // localStorage.setItem('isAdmin' , isAdmin)
   // console.log('value for isadmin ' ,isAdmin);
   const [checkuserlogin, setcheckuserlogin] = useState(false)
+  console.log(checkuserlogin);
+  
   // console.log(checkuserlogin+  ' rerendering ');
 
   const [uname1, setUsername] = useState(localStorage.getItem('username') || '')
@@ -217,7 +219,6 @@ export default function App() {
             isdark,
             issign,
             userlogin,
-            // isAdmin,
             uname1,
             setUsername,
           ]}

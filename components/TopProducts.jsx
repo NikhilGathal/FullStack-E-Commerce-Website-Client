@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect } from 'react';
 
 import { FaStar } from 'react-icons/fa';

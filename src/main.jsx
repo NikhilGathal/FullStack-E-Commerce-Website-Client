@@ -19,6 +19,8 @@ import AddNewProduct from '../components/AddNewProduct'
 import OrderConfirmation from '../components/OrderConfirmation'
 import Root from '../pages/Root'
 import EditUser from '../components/EditUser'
+import EmailsList from '../components/EmailsList'
+import FeedbacksList from '../components/FeedbacksList'
 
 const router = createBrowserRouter([
   {
@@ -69,9 +71,9 @@ const router = createBrowserRouter([
         element: <CarouselPage />,
       },
       {
-        path:"/search/:searchTerm",
-          element: <CarouselPage />,
-        },
+        path: '/search/:searchTerm',
+        element: <CarouselPage />,
+      },
       {
         path: '/Admin',
         element: <AdminDashBoard />,
@@ -92,6 +94,14 @@ const router = createBrowserRouter([
       {
         path: '/EditUser',
         element: <EditUser />,
+      },
+      {
+        path: '/Emailslist',
+        element: <EmailsList />,
+      },
+      {
+        path: '/FeedbacksList',
+        element: <FeedbacksList />,
       },
     ],
   },

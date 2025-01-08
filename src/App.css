@@ -305,7 +305,7 @@ button:hover {
 .H:hover {
   /* transform: scale(1.05); */
   color: #a870f1;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .title-container {
@@ -709,6 +709,12 @@ select option:hover {
   cursor: pointer; /* Optional: change the cursor to pointer for interactivity */
 }
 
+.ordhead 
+{
+  color: var(--text-color);
+  margin-top: 100px;
+}
+
 @media (max-width: 1245px) {
   .diwali-contain img {
     display: block;
@@ -817,7 +823,7 @@ select option:hover {
     /* display: block; */
     left: -15px;
     top: 19px;
-    padding: 7px;
+    padding: 5px;
     padding-inline: 14px;
     z-index: 10;
   }
@@ -1083,8 +1089,7 @@ select option:hover {
     position: absolute;
     left: -13px;
     top: 14px;
-    padding-inline: 13px;
- 
+    padding-inline: 11px;
   }
   .suggestion-box-log p {
     margin: 0px 0px;

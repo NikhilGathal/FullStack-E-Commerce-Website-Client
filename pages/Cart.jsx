@@ -69,9 +69,9 @@ export default function Cart() {
 
   if (isLoading) {
     return (
-      <h1 className="Load" style={{ textAlign: 'center' }}>
-        Loading Cart items...
-      </h1>
+      <div className="admin">
+      <h1>Loading Cart Items...</h1>
+    </div>
     )
   }
 
@@ -174,7 +174,7 @@ export default function Cart() {
         <div className="empty-cart">
           <img src={empty} />
           <h1>Your Cart is Empty</h1>
-          <Link to="/">
+          <Link to="/Home">
             <button>Return to Shop</button>
           </Link>
         </div>

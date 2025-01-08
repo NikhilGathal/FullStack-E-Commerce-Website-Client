@@ -17,7 +17,7 @@ const ItemDetail = () => {
   const [error, setError] = useState(null)
   const [, dark] = useOutletContext()
  const[pdt ,setpdt] = useState([])
-
+ const [userId, setUserId] = useState(null)
 
   // useEffect(() => {
   //   // Fetch item details from localStorage
@@ -82,6 +82,132 @@ const ItemDetail = () => {
     }
   }, [pdt, productId]); // Runs when pdt is updated
 
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        // Step 1: Retrieve the username from localStorage
+        const username = localStorage.getItem('username');
+        if (!username) {
+          console.warn('Username not found in localStorage');
+          return; // Early return if username is not found, so the rest of the code doesn't run
+        }
+  
+        // Step 2: Fetch user details by username to get the userId
+        const userResponse = await fetch(
+          `http://localhost:8080/api/users/${username}`
+        );
+  
+        if (!userResponse.ok) {
+          console.error('User not found');
+          return;
+        }
+  
+        const user = await userResponse.json(); // Assuming the response contains user details including ID
+        setUserId(user.id); // Set userId in state
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+  
+    const username = localStorage.getItem('username');
+    if (username) {
+      fetchUserId(); // Only call fetchUserId if username exists
+    }
+  }, []);
+
+    // Add to cart function
+    const addToCart = async (productId, quantity = 1) => {
+      const cartKey = 'cartItems' // Key for localStorage
+  
+      if (!userId) {
+        // User is not logged in; manage cart in localStorage
+        let storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
+        const existingProductIndex = storedCart.findIndex(
+          (item) => item.productId === productId
+        )
+  
+        if (existingProductIndex !== -1) {
+          storedCart[existingProductIndex].quantity += quantity // Update quantity
+        } else {
+          storedCart.push({ productId, quantity }) // Add new product
+        }
+  
+        // Save updated cart to localStorage
+        localStorage.setItem(cartKey, JSON.stringify(storedCart))
+  
+        // Dispatch to update Redux store
+        dispatch(addCartItem({ productId}))
+        console.log('Added item to localStorage cart:', storedCart)
+      } else {
+        // console.log(userId)
+        try {
+          // Step 1: Add item to the cart on the backend
+          const response = await fetch(
+            `http://localhost:8080/api/cart/add?userId=${userId}&productId=${productId}&quantity=${quantity}`,
+            {
+              method: 'POST',
+            }
+          )
+          if (response.ok) {
+            // Step 2: Dispatch the action after successful addition
+            dispatch(addCartItem({ productId }))
+          } else {
+            console.error('Failed to add item to cart')
+          }
+        } catch (error) {
+          console.error('Error adding item to cart:', error)
+        }
+      }
+    }
+    // Handle add to wishlist
+    const handleAddToWishList = async () => {
+      const wishKey = 'wishItems'; // Use username-based key or a default key
+    
+      if (!userId) {
+        // User is not logged in; manage wishlist in localStorage
+        let storedWish = JSON.parse(localStorage.getItem(wishKey)) || [];
+        const existingProductIndex = storedWish.findIndex(
+          (item) => item.productId === productId
+        );
+    
+        if (existingProductIndex === -1) {
+          storedWish.push({ productId, quantity: 1 }); // Add new product
+        } else {
+          console.log('Product already in wishlist.');
+        }
+    
+        // Save updated wishlist to localStorage
+        localStorage.setItem(wishKey, JSON.stringify(storedWish));
+    
+        // Dispatch to update Redux store
+        dispatch(addWishItem({ productId }));
+        console.log('Added item to localStorage wishlist:', storedWish);
+      } else {
+        console.log(userId);
+        try {
+          // Step 1: Add item to the wishlist on the backend
+          const wishlistItem = { userId, productId, quantity: 1 }; // Construct the item to send
+    
+          const response = await fetch(`http://localhost:8080/api/wishlist/add?userId=${userId}&productId=${productId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', // Send JSON data
+            },
+            body: JSON.stringify(wishlistItem), // Send the wishlist item object as the request body
+          });
+    
+          if (response.ok) {
+            // Step 2: Dispatch the action after successful addition
+            dispatch(addWishItem({ productId }));
+          } else {
+            console.error('Failed to add item to wishlist');
+          }
+        } catch (error) {
+          console.error('Error adding item to wishlist:', error);
+        }
+      }
+    };
+
   if (loading)
     return (
       <>
@@ -116,54 +242,8 @@ const ItemDetail = () => {
             </span>
           </div>
           <div className="item-button">
-            <button
-              onClick={() => {
-                const username = localStorage.getItem('username')
-                const cartKey = username ? `${username}cart` : 'cartItems'
-                let storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
-
-                // Check if the product already exists in the cart
-                const existingProductIndex = storedCart.findIndex(
-                  (cartItem) => cartItem.productId === productId
-                )
-                if (existingProductIndex !== -1) {
-                  // If it exists, increment the quantity
-                  storedCart[existingProductIndex].quantity += 1
-                } else {
-                  // If it doesn't exist, add a new object with productId and quantity
-                  storedCart.push({ productId, quantity: 1 })
-                }
-                // Save the updated cart back to localStorage
-                localStorage.setItem(cartKey, JSON.stringify(storedCart))
-                // Dispatch the action to add to cart in Redux
-                dispatch(addCartItem({ productId }))
-              }}
-            >
-              Add to cart
-            </button>
-            <button
-              onClick={() => {
-                const username = localStorage.getItem('username')
-                const wishKey = username ? `${username}wish` : 'wishItems'
-                let storedWish = JSON.parse(localStorage.getItem(wishKey)) || []
-                const existingProductIndex = storedWish.findIndex(
-                  (wishItem) => wishItem.productId === productId
-                )
-                if (existingProductIndex !== -1) {
-                  console.log('Product already in wishlist.')
-                } else {
-                  storedWish.push({ productId, quantity: 1 })
-                }
-
-                // Save the updated wishlist back to localStorage
-                localStorage.setItem(wishKey, JSON.stringify(storedWish))
-
-                // Dispatch the action to add to wishlist in Redux
-                dispatch(addWishItem({ productId }))
-              }}
-            >
-              Add to wishlist
-            </button>
+          <button onClick={() => addToCart(productId, 1)}>Add to Cart</button>
+          <button onClick={handleAddToWishList}>Add to WishList</button>
           </div>
         </div>
       </div>

@@ -1,0 +1,66 @@
+/* Light Mode (Default) */
+.emails-list-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  max-width: 800px;
+  margin: 60px auto 0 auto;
+  background-color: var(--background-color, white);
+  color: var(--text-color, black);
+  --header-back: #f1f1f1;
+}
+
+  /* Dark Mode */
+  .emails-list-container.dark {
+      --background-color: #2c4760;
+      --text-color: white;
+      --header-back: hsl(209, 23%, 22%);
+    }
+
+.emails-list-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.emails-table-container {
+  overflow-x: auto; /* Enables horizontal scrolling for small screens */
+  margin: 35px auto 0 auto;
+}
+
+.emails-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: auto;
+}
+
+.emails-table-header {
+  background-color: var(--header-back, #f4f4f4);
+}
+
+.emails-table th,
+.emails-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.emails-table th {
+  font-weight: bold;
+}
+
+.emails-table-row {
+  border-bottom: 1px solid #ddd;
+}
+
+
+@media (max-width: 387px) {
+  .emails-table th,
+  .emails-table td {
+    padding: 6px; /* Reduce padding for smaller screens */
+    font-size: 12px; /* Adjust font size for better fit */
+  }
+
+  .emails-heading {
+    font-size: 18px; /* Adjust heading font size for better fit */
+  }
+}

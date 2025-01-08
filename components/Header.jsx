@@ -27,30 +27,41 @@ export default function Header({
   setUsername,
   setcheckuserlogin,
 }) {
-
   // console.log('rerendering');
   // const isAdmin = localStorage.getItem('isAdmin')
 
   const [dbname, setDbname] = useState('')
-// console.log(dbname);
+  // console.log(dbname);
 
-  if(localStorage.getItem('isAdmin') === 'true')
-  {
+  // if (localStorage.getItem('isAdmin') === 'true') {
+  //   // console.log( localStorage.getItem('adminname') === dbname);
+  //   fetch('http://localhost:8080/api/users/admin-username')
+  //     .then((response) => response.text()) // Parse the JSON response
+  //     .then((data) => {
+  //       setDbname(data)
+  //       // console.log(data) // Set the admin username in state
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching admin username:', error)
+  //     })
+  // }
 
-    // console.log( localStorage.getItem('adminname') === dbname);
-    
+  const [isAdmin1, setIsAdmin1] = useState(
+    localStorage.getItem('isAdmin') === 'true'
+  )
 
-    fetch('http://localhost:8080/api/users/admin-username')
-    .then((response) => response.text()) // Parse the JSON response
-    .then((data) => {
-      setDbname(data)
-      // console.log(data) // Set the admin username in state
-    })
-    .catch((error) => {
-      console.error('Error fetching admin username:', error)
-    })
-  }
-  
+  useEffect(() => {
+    if (isAdmin1) {
+      fetch('http://localhost:8080/api/users/admin-username')
+        .then((response) => response.text())
+        .then((data) => {
+          setDbname(data)
+        })
+        .catch((error) => {
+          console.error('Error fetching admin username:', error)
+        })
+    }
+  }, [isAdmin1])
 
   // console.log(isAdmin);
   const name = localStorage.getItem('adminname')
@@ -60,7 +71,7 @@ export default function Header({
 
   const [signname, setsignname] = useState(false)
   // console.log(signname);
-  
+
   const [islog, setislog] = useState(false)
   // console.log(islog);
 
@@ -216,6 +227,7 @@ export default function Header({
             throw new Error('Failed to delete user')
           }
           alert('Account deleted successfully')
+          setcheckuserlogin(false)
           localStorage.removeItem('username')
           setuserlogin(false)
           setusername('')
@@ -339,73 +351,22 @@ export default function Header({
             setsignname={setsignname}
             setislog={setislog}
           />
-
-          {/* {(username && username !== adminUsername) ||
-          username === adminUsername ? (
-            <div className={`heading-container ${dark ? 'dark' : ''}`}>
-              {username === adminUsername ? (
-                <h3 className="H heading">Profile</h3>
-              ) : (
-                username !== adminUsername && (
-                  <h3 className="H heading">Profile</h3>
-                )
-              )}
-              {username && (
-                <div className="suggestion-box">
-                  {isAdmin ? (
-                    <>
-                      <Link to="/Admin">
-                        <p>Orders</p>
-                      </Link>
-                      <Link to="/Add">
-                        <p>Add Product</p>
-                      </Link>
-                      <Link to="/EditUser">
-                        <p>Edit Profile</p>
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Link to="/myorder">
-                        <p>My Orders</p>
-                      </Link>
-                      <Link to="/EditUser">
-                        <p>Edit Profile</p>
-                      </Link>
-                      <Link to="/">
-                        <p onClick={handleDeleteAccount}>Delete Account</p>
-                      </Link>
-                      <Link to="/">
-                        <p>Buy Again</p>
-                      </Link>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-          ) : null} */}
-
-
-
-
-
-
-
-
-
-
-
           <div
-              style={{
-                display: (localStorage.getItem('username') || localStorage.getItem('isAdmin') === 'true') ? 'block' : 'none'
-              }}
-            
-          className={`heading-container ${dark ? 'dark' : ''}`}>
+            style={{
+              display:
+                localStorage.getItem('username') ||
+                localStorage.getItem('isAdmin') === 'true'
+                  ? 'block'
+                  : 'none',
+            }}
+            className={`heading-container ${dark ? 'dark' : ''}`}
+          >
             {(localStorage.getItem('username') ||
               localStorage.getItem('isAdmin') === 'true') && (
               <>
                 <h3 className="H heading">Profile</h3>
-                {localStorage.getItem('username') ? (
+                {localStorage.getItem('username') &&
+                localStorage.getItem('isAdmin') !== 'true' ? (
                   // Regular user links
                   <div className="suggestion-box">
                     <Link to="/myorder">
@@ -417,7 +378,7 @@ export default function Header({
                     <Link to="/">
                       <p onClick={handleDeleteAccount}>Delete Account</p>
                     </Link>
-                    <Link to="/">
+                    <Link to="/Home">
                       <p>Buy Again</p>
                     </Link>
                   </div>
@@ -432,6 +393,12 @@ export default function Header({
                     </Link>
                     <Link to="/EditUser">
                       <p>Edit Profile</p>
+                    </Link>
+                    <Link to="/Emailslist">
+                      <p>Subscription</p>
+                    </Link>
+                    <Link to="/FeedbacksList">
+                      <p>Feedbacks</p>
                     </Link>
                   </div>
                 ) : null}
@@ -494,6 +461,7 @@ export default function Header({
               setusername('')
               setIsAdmin(false)
               setsignname(false)
+              setcheckuserlogin(false)
               // console.log('logout running')
               localStorage.setItem('isAdmin', 'false')
               localStorage.setItem('signedUp', 'false')
@@ -509,27 +477,6 @@ export default function Header({
           >
             Logout
           </h3>
-          {/* <NavLink
-            style={{
-              display: username ? 'inline' : 'none', // Show only if someone is logged in
-            }}
-            className={({ isActive }) => (isActive ? 'underline' : '')}
-            to="/myorder"
-          >
-            <h3 className="H">
-              {username === 'Admin' ? 'Orders' : 'My Orders'}
-            </h3>
-          </NavLink> */}
-
-          {/* <NavLink
-            style={{
-              display: username ? 'inline' : 'none', // Show only if someone is logged in
-            }}
-            className={({ isActive }) => (isActive ? 'underline' : '')}
-            to=""
-          >
-             </NavLink> */}
-
           <NavLink
             className={({ isActive }) => (isActive ? 'underline' : '')}
             to="/about"
