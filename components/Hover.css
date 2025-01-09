@@ -47,11 +47,11 @@
   
   @media  (max-width: 697px) {
     .suggestion-box {
-      top: 19.5px !important;
-      left: -5px !important;
+      top: 23.5px !important;
+      left: -6px !important;
       padding: 2px !important;
       font-size: 9px !important ;
-      padding-inline: 2px !important;
+      padding-inline: 7px !important;
     }
     .suggestion-box p 
     {
@@ -60,6 +60,7 @@
       line-height: 1.5 ;
     }
   }
+  
   
   @media  (max-width: 440px) {
     .suggestion-box {
@@ -77,10 +78,10 @@
   
   @media  (max-width: 435px) {
     .suggestion-box {
-      top: 22px !important;
+      top: 18px !important;
       left: -6px !important;
-      padding-inline:8px !important;
-      font-size: 9px !important ;
+      padding-inline:7.7px !important;
+      font-size: 9px !important;
     }
     .suggestion-box p 
     {
