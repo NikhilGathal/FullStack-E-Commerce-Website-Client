@@ -19,7 +19,7 @@ const AboutUs = () => {
       <p>
         Our dedicated team is here to assist you with any questions or concerns you may have. Thank you for supporting us and being a part of our community!
       </p>
-      <h2>Our Values</h2>
+      <h3>Our Values</h3>
       <ul className='value'>
         <li>Quality: We strive for excellence in everything we do.</li>
         <li>Sustainability: We are committed to minimizing our environmental impact.</li>
