@@ -14,8 +14,8 @@ export default function App() {
 
   const [issign, setissign] = useState(false)
   // const [dark ,isdark] = useState(false)
-  const [userlogin, setuserlogin] = useState(true)
-  // console.log(userlogin);
+  const [userlogin, setuserlogin] = useState(JSON.parse(localStorage.getItem("userlogin"))|| false)
+  console.log('app comp ' + userlogin);
 
   const [dark, isdark] = useState(
     JSON.parse(localStorage.getItem('isdarkmode'))
@@ -28,7 +28,7 @@ export default function App() {
   // localStorage.setItem('isAdmin' , isAdmin)
   // console.log('value for isadmin ' ,isAdmin);
   const [checkuserlogin, setcheckuserlogin] = useState(false)
-  console.log(checkuserlogin);
+  // console.log(checkuserlogin);
   
   // console.log(checkuserlogin+  ' rerendering ');
 
@@ -211,6 +211,7 @@ export default function App() {
           isAdmin={isAdmin}
           checkuserlogin={checkuserlogin}
           setcheckuserlogin={setcheckuserlogin}
+          userlogin={userlogin}
         />
         <Outlet
           context={[

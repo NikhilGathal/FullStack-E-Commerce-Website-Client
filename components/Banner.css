@@ -24,6 +24,24 @@ body {
   margin-inline: auto;
 }
 
+@media (min-width: 600px)  and (max-width: 1023px){
+  .ban {
+    max-width:850px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1245px) {
+  .ban {
+    max-width: 1000px;
+  }
+}
+
+@media (min-width: 1245px) {
+  .ban {
+    max-width: 1260px;
+  }
+} 
+
 .banner {
   --background-color: white;
   --text-color: black;

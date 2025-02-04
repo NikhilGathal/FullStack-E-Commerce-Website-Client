@@ -32,12 +32,12 @@ function Root() {
 
   return (
     <>
-      <Hero1 />
-      <Category />
-      <TopProducts />
-      <Banner />
-      <Subscribe />
-      <Testimonials />
+      <Hero1 id="hero" />
+      <Category id="category" />
+      <TopProducts id="top-products" />
+      <Subscribe id="subscribe" />
+      <Banner id="banner" />
+      <Testimonials id="testimonials" />
       <Footer dark={dark} />
     </>
   )

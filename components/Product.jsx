@@ -216,8 +216,8 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
       <div className="cta-container">
         { localStorage.getItem('isAdmin') === 'true' ? (
           <>
-            <button onClick={() => handleDelete(productId)}>Remove Item</button>
-            <button onClick={handleUpdateProduct}>Update Item</button>
+            <button onClick={() => handleDelete(productId)}>Remove Product</button>
+            <button onClick={handleUpdateProduct}>Edit Product</button>
           </>
         ) : (
           <>

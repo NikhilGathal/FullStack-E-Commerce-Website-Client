@@ -658,26 +658,30 @@ ul li:last-child {
   color: #a870f1;
 }
 .login-container {
+  /* display: none; */
   position: relative;
 }
 
 
-.login-container:hover .suggestion-box-log,
-.suggestion-box-log:hover {
-  display: block;
-}
 
 .suggestion-box-log {
+  border-radius: 4px;
   display: none;
   position: absolute;
-  left: -9px;
-  top: 23px;
+  top: 50px;
+  left: -12px;
   background-color: var(--background-color);
   /* border: 1px solid #ccc; */
   box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.2); /* Adds shadow for a popup effect */
   padding: 12px;
   z-index: 10;
 }
+
+.login-container:hover .suggestion-box-log,
+.suggestion-box-log:hover {
+  display: block;
+}
+
 .suggestion-box-log p {
   margin: 0px 0;
   font-weight: 550;
@@ -708,11 +712,11 @@ select option:hover {
   height: 23px; /* Adjust the height as needed */
   cursor: pointer; /* Optional: change the cursor to pointer for interactivity */
 }
-
-.ordhead 
-{
-  color: var(--text-color);
-  margin-top: 100px;
+.header-contents #wel {
+  font-size: 25px;
+}
+.header-contents h3 {
+  font-size: 20px;
 }
 
 @media (max-width: 1245px) {
@@ -721,11 +725,17 @@ select option:hover {
     max-width: 100%;
     height: auto;
   }
+  .header-contents #wel {
+    font-size: 20px;
+  }
+  .header-contents h3 {
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 1014px) {
   .header-contents h1 {
-    font-size: 22px;
+    font-size: 21px;
   }
   .extra {
     margin-top: 80px;
@@ -734,7 +744,7 @@ select option:hover {
 
 @media (max-width: 994px) {
   .header-contents h1 {
-    font-size: 21px;
+    font-size: 19px;
   }
   .cart-container {
     margin-top: 30px;
@@ -742,23 +752,26 @@ select option:hover {
 }
 
 @media (max-width: 975px) {
-}
-
-@media (max-width: 975px) {
   .header-contents h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
-}
-
-@media (max-width: 994px) {
-  .header-contents h1 {
-    font-size: 19px;
+  .header-contents #wel {
+    font-size: 18px;
+  }
+  .header-contents h3 {
+    font-size: 16px;
   }
 }
 
 @media (max-width: 932px) {
   .header-contents h1 {
-    font-size: 16px;
+    font-size: 17px;
+  }
+  .header-contents #wel {
+    font-size: 17px;
+  }
+  .header-contents h3 {
+    font-size: 15px;
   }
 }
 
@@ -770,6 +783,12 @@ select option:hover {
   .cart-container {
     margin-top: 25px;
   }
+  .header-contents #wel {
+    font-size: 15px;
+  }
+  .header-contents h3 {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 805px) {
@@ -780,7 +799,6 @@ select option:hover {
   }
   .suggestion-box-log p {
     font-size: 12px;
-   
   }
   .cart-items-count {
     width: 13px;
@@ -805,20 +823,36 @@ select option:hover {
     font-size: 14px;
   }
   .header-contents .ham h3 {
-    font-size: 14px;
+    font-size: 12px;
   }
   .item-wish {
     font-size: 26px;
+  }
+
+  .header-contents #wel {
+    font-size: 10px;
   }
 }
 
 @media (max-width: 730px) {
   .header-contents .ham h3 {
+    font-size: 10px;
+  }
+  .suggestion-box-log {
+    left: -10px;
+    top: 20px;
+    padding: 12px;
+  }
+  .suggestion-box-log p {
     font-size: 12px;
   }
+
 }
 
 @media (max-width: 697px) {
+  .header-contents #wel {
+    font-size: 13px;
+  }
   .suggestion-box-log {
     /* display: block; */
     left: -15px;
@@ -1083,7 +1117,6 @@ select option:hover {
 }
 
 @media (max-width: 437px) {
-
   .suggestion-box-log {
     display: none;
     position: absolute;
@@ -1176,6 +1209,10 @@ select option:hover {
 }
 
 @media (max-width: 408px) {
+  .header-contents #wel {
+    font-size: 9px;
+  }
+
   .cart-container .sum-total {
     margin-right: 2px;
   }

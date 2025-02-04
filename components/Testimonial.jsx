@@ -32,7 +32,7 @@ const TestimonialData = [
     img: pro4,
   },
 ]
-const Testimonials = () => {
+const Testimonials = ({id}) => {
   const [, dark] = useOutletContext()
 
   var settings = {
@@ -63,7 +63,7 @@ const Testimonials = () => {
         },
       },
       {
-        breakpoint: 640,
+        breakpoint: 680,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -73,7 +73,7 @@ const Testimonials = () => {
   }
 
   return (
-    <div className={`testimonial-container ${dark ? 'dark' : ''}`}>
+    <div id={id} className={`testimonial-container ${dark ? 'dark' : ''}`}>
       <div className="testimonial-header">
         <p className="testimonial-subtitle">What our customers are saying</p>
         <h1 className="testimonial-title">Testimonials</h1>

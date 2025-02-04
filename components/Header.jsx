@@ -26,8 +26,10 @@ export default function Header({
   uname1,
   setUsername,
   setcheckuserlogin,
+  checkuserlogin,
+  userlogin
 }) {
-  // console.log('rerendering');
+  console.log('from header ' + userlogin);
   // const isAdmin = localStorage.getItem('isAdmin')
 
   const [dbname, setDbname] = useState('')
@@ -243,6 +245,25 @@ export default function Header({
     }
   }
 
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    let yOffset;
+  
+    if (section) {
+      if (section.id === "subscribe") {  // Use a string for ID comparison
+        yOffset = -200;
+      } else {
+        yOffset = -100;
+      }
+      // Adjust offset based on header height
+      const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+  useEffect(() => {
+    localStorage.setItem("userlogin", JSON.stringify(userlogin));
+  }, [userlogin]);
+
   // const dark = false
   return (
     <header
@@ -259,6 +280,7 @@ export default function Header({
             onClick={() => {
               //  setquery('')
               // dispatch(fetchdata())
+              window.scrollTo({ top: 0, behavior: 'smooth' })
               dispatch(fetchProductdata())
               // dispatch(updateAllProducts(statedata))
               //  console.log('clicked');
@@ -288,14 +310,14 @@ export default function Header({
           alt={dark ? 'Light Mode' : 'Dark Mode'}
           className="mode"
         />
-        <h1>
+        <h3 id="wel">
           {localStorage.getItem('username')
             ? `Welcome ${localStorage.getItem('username')}`
             : localStorage.getItem('isAdmin') === 'true' &&
               localStorage.getItem('adminname')
             ? `Welcome ${localStorage.getItem('adminname')}`
             : ''}
-        </h1>
+        </h3>
         <div className="icon-contain">
           <Link className="cart-icon" to="/cart">
             <img
@@ -329,6 +351,25 @@ export default function Header({
             &times;
           </span>
 
+          <div className="H sections-container">
+            <h3 >Sections</h3>
+            <div className="suggestion-box-home">
+              {/* <p onClick={() => scrollToSection("hero")} className='H'>Top</p> */}
+              <p onClick={() => scrollToSection('category')} className="H">
+                Category
+              </p>
+              <p onClick={() => scrollToSection('top-products')} className="H">
+                TopProducts
+              </p>
+              <p onClick={() => scrollToSection('subscribe')} className="H">
+                Subscription
+              </p>
+              <p onClick={() => scrollToSection('testimonials')} className="H">
+                Testimonials
+              </p>
+            </div>
+          </div>
+
           <h3
             className="H"
             onClick={(e) => {
@@ -359,12 +400,12 @@ export default function Header({
                   ? 'block'
                   : 'none',
             }}
-            className={`heading-container ${dark ? 'dark' : ''}`}
+            className={`H heading-container ${dark ? 'dark' : ''}`}
           >
             {(localStorage.getItem('username') ||
               localStorage.getItem('isAdmin') === 'true') && (
               <>
-                <h3 className="H heading">Profile</h3>
+                <h3 className=" heading">Profile</h3>
                 {localStorage.getItem('username') &&
                 localStorage.getItem('isAdmin') !== 'true' ? (
                   // Regular user links
@@ -405,15 +446,17 @@ export default function Header({
               </>
             )}
           </div>
+         {
+          !userlogin &&
+         (  <div className="H login-container">
           <h3
-            className="H login-container"
-            style={{
-              display:
-                localStorage.getItem('username') ||
-                localStorage.getItem('isAdmin') === 'true'
-                  ? 'none'
-                  : 'block',
-            }}
+           //  style={{
+           //    display:
+           //      localStorage.getItem('username') ||
+           //      localStorage.getItem('isAdmin') === 'true'
+           //        ? 'none'
+           //        : 'block',
+           //  }}
           >
             Login
             <div className="suggestion-box-log">
@@ -437,6 +480,8 @@ export default function Header({
               </p>
             </div>
           </h3>
+        </div>)
+         }
           <ModalLogin
             islog={islog}
             setislog={setislog}
@@ -446,6 +491,7 @@ export default function Header({
             setUsername={setUsername}
             setcheckuserlogin={setcheckuserlogin}
             setissign={setissign}
+            userlogin={userlogin}
           />
           <h3
             className="H"
@@ -458,6 +504,7 @@ export default function Header({
               dispatch(loadCartItemsFromLocal(storedCart))
               dispatch(loadWishItem(storedwish))
               setuserlogin(false)
+              localStorage.setItem("userlogin", JSON.stringify(false));
               setusername('')
               setIsAdmin(false)
               setsignname(false)

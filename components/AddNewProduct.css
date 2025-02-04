@@ -27,6 +27,11 @@
   justify-content: center;
 }
 
+.newpdt-inp 
+{
+  text-align: center;
+}
+
 .update-product-container-content {
   border: 2px solid rgb(220, 210, 210);
   max-width: 800px;

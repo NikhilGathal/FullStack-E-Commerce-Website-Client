@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './Subscribe.css'; // Import your custom CSS file
 import { useOutletContext } from 'react-router-dom';
 
-const Subscribe = () => {
+const Subscribe = ({id}) => {
   const [, dark] = useOutletContext(); // Dark mode context
   const [email, setEmail] = useState(''); // Email state
   const [isSubmitted, setIsSubmitted] = useState(false); // For showing submission feedback
@@ -95,7 +95,7 @@ const Subscribe = () => {
     }
   };
   return (
-    <div className={`sub ${dark ? 'dark' : ''}`}>
+    <div id={id} className={`sub ${dark ? 'dark' : ''}`}>
       <div data-aos="zoom-in" className="subscribe-section">
         <div className="container backdrop-blur-sm py-10">
           <div className="subscribe-content">

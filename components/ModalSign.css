@@ -23,12 +23,12 @@
 }
 
 .signup-role-container input[type='checkbox'] {
-  margin-right: 40px; 
+  margin-right: auto; 
 }
 .check {
-  width: 60%;
+  width: 5%;
+  height: 15px;
 }
-
 
 .hidden {
   display: none;

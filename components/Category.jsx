@@ -47,10 +47,10 @@ const ProductsData = [
   },
 ]
 
-const Category = () => {
+const Category = ({ id }) => {
   const [, dark] = useOutletContext()
   return (
-    <div className={`cat-cat ${dark ? 'dark' : ''}`}>
+    <div id={ id } className={`cat-cat ${dark ? 'dark' : ''}`}>
       <div className="cat-mt-14 cat-mb-12 duration-200">
         <div className="cat-container">
           <div className="cat-text-center cat-mb-10 cat-max-w-\[600px\] cat-mx-auto">

@@ -1,112 +1,143 @@
 /* General Styles for the Subscribe Section */
 
-.sub 
-{
-    --text-color: black;
-    --cardback : rgb(217, 220, 226);
-    padding-inline: 16px;
-    margin-top: 30px;
-    /* margin-bottom: 125px; */
-  
+.sub {
+  --text-color: black;
+  --cardback: rgb(217, 220, 226);
+  padding-inline: 16px;
+  margin-top: 130px;
+  margin-bottom: 125px;
+  min-height: 50vh;
 }
-.sub.dark 
-{
-    --text-color: white;
-    --cardback :#374151;
-    
+.sub.dark {
+  --text-color: white;
+  --cardback: #374151;
 }
 
 .subscribe-section {
-
   /* min-height: 345px; */
-   min-height: 280px;
-    background-color: var(--cardback); /* bg-slate-700 */
-    color: var(--text-color);
-    padding: 2.5rem 1rem;
-    text-align: center; /* Center the text */
-    box-sizing: border-box;
-    max-width: 1200px;
-    margin-inline: auto;
-  }
-  
+  min-height: 280px;
+  background-color: var(--cardback); /* bg-slate-700 */
+  color: var(--text-color);
+  padding: 2.5rem 1rem;
+  text-align: center; /* Center the text */
+  box-sizing: border-box;
+  max-width: 1080px;
+  margin-inline: auto;
+}
 
-  
-  /* Container */
-  .container {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 1rem;
-    padding-left: 1rem;
-    max-width: 1200px;
-    backdrop-filter: blur(10px); /* backdrop-blur-sm */
-    box-sizing: border-box;
+
+@media (max-width : 350px) {
+  .subscribe-section {
+    max-width :250px;
+    padding-block: 20px;
+    padding-inline: 0.5rem !important;
   }
-  
-  /* Content Container */
-  .subscribe-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem; /* space-y-6 */
-    max-width: 600px;
-    margin: 0 auto;
+}
+@media (min-width : 350px)and (max-width : 600px) {
+  .subscribe-section {
+    max-width : 280px;
+    padding-block: 30px;
+    padding-inline: 0.5rem !important;
   }
-  .subscribe-content button
-  {
-    border: none;
-    /* display: inline-block; */
-    color: var(--text-color);
+}
+
+
+
+@media (min-width:600px)  and (max-width: 880px){
+  .subscribe-section {
+    max-width:520px;
   }
-  .subscribe-content button:hover
-  {
-    
-    background-color: #898989;
+}
+
+@media (min-width: 880px)  and (max-width: 1023px){
+  .subscribe-section {
+    max-width:800px;
   }
-  
-  .success-message {
-    margin-top: 10px;
-    color: var(--text-color);
-    font-size: 16px;
-    font-weight: bold;
+}
+
+@media (min-width: 1024px) and (max-width: 1245px) {
+  .subscribe-section {
+    max-width: 900px;
   }
-  
-  /* Heading */
+}
+
+@media (min-width: 1245px) {
+  .subscribe-section {
+    max-width: 1080px;
+  }
+}
+/* Container */
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  max-width: 1200px;
+  backdrop-filter: blur(10px); /* backdrop-blur-sm */
+  box-sizing: border-box;
+}
+
+/* Content Container */
+.subscribe-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* space-y-6 */
+  max-width: 600px;
+  margin: 0 auto;
+}
+.subscribe-content button {
+  border: none;
+  /* display: inline-block; */
+  color: var(--text-color);
+}
+.subscribe-content button:hover {
+  background-color: #898989;
+}
+
+.success-message {
+  margin-top: 10px;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Heading */
+.subscribe-heading {
+  margin-top: 0;
+  font-size: 1.875rem; /* 2xl */
+  font-weight: 600;
+  text-align: center !important;
+}
+
+@media (min-width: 640px) {
   .subscribe-heading {
-    margin-top: 0;
-    font-size: 1.875rem; /* 2xl */
-    font-weight: 600;
-    text-align: center !important;
+    font-size: 2.25rem; /* sm:text-4xl */
+    text-align: left; /* sm:text-left */
   }
-  
-  @media (min-width: 640px) {
-    .subscribe-heading {
-      font-size: 2.25rem; /* sm:text-4xl */
-      text-align: left; /* sm:text-left */
-    }
+}
+
+/* Input Field */
+.subscribe-input {
+  width: 100%; /* w-full */
+  padding: 0.75rem; /* p-3 */
+  border: 1px solid #e5e7eb; /* Light border */
+  border-radius: 0.375rem; /* Rounded corners */
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  text-align: center;
+}
+
+.subscribe-input:focus {
+  outline: none;
+  border-color: #4263eb; /* Focus with primary color */
+  /* background-color: rgba(66, 99, 235, 0.1);  */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .subscribe-section {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
-  
-  /* Input Field */
-  .subscribe-input {
-    width: 100%; /* w-full */
-    padding: 0.75rem; /* p-3 */
-    border: 1px solid #e5e7eb; /* Light border */
-    border-radius: 0.375rem; /* Rounded corners */
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .subscribe-input:focus {
-    outline: none;
-    border-color: #4263eb; /* Focus with primary color */
-    /* background-color: rgba(66, 99, 235, 0.1);  */
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .subscribe-section {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-  }
-  
-  
+}

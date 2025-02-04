@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import './ModalLogin.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,7 +11,8 @@ export default function ModalLogin({
   setIsAdmin,
   setUsername,
   setcheckuserlogin,
-  setissign
+  setissign,
+  userlogin
 }) {
   const existingAdmin = JSON.parse(localStorage.getItem('Admin')) || {}
 
@@ -64,6 +65,7 @@ export default function ModalLogin({
           setusername(loginData.username)
           setUsername(loginData.username)
           setuserlogin(true)
+          // localStorage.setItem("userlogin", JSON.stringify(true));
           setislog(false)
           setcheckuserlogin(true)
           setIsAdmin(data.admin)
@@ -159,6 +161,10 @@ export default function ModalLogin({
     setislog(false)
     setIsForgotPassword(false)
   }
+
+  useEffect(() => {
+    localStorage.setItem("userlogin", JSON.stringify(userlogin));
+  }, [userlogin]);
 
   return createPortal(
     <div onClick={m} className={`modal-overlay-log ${islog ? '' : 'hidden'}`}>

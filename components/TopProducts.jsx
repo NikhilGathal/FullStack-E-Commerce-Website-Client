@@ -44,7 +44,7 @@ const ProductsData = [
   },
 ];
 
-const TopProducts = ({ handleOrderPopup }) => {
+const TopProducts = ({ handleOrderPopup ,id }) => {
   const [, dark] = useOutletContext();
 
   // Initialize AOS when the component mounts
@@ -56,7 +56,7 @@ const TopProducts = ({ handleOrderPopup }) => {
   }, []);
 
   return (
-    <div className={`tp ${dark ? 'dark' : ''}`}>
+    <div id={id} className={`tp ${dark ? 'dark' : ''}`}>
       <div className="container">
         {/* Header section */}
         <div className="text-left mb-24">
