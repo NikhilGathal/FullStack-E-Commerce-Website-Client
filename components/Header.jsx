@@ -31,7 +31,7 @@ export default function Header({
 }) {
   console.log('from header ' + userlogin);
   // const isAdmin = localStorage.getItem('isAdmin')
-
+  const location = useLocation()
   const [dbname, setDbname] = useState('')
   // console.log(dbname);
 
@@ -245,25 +245,49 @@ export default function Header({
     }
   }
 
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    let yOffset;
+  // const scrollToSection = (id) => {
+  //   const section = document.getElementById(id);
+  //   let yOffset;
   
-    if (section) {
-      if (section.id === "subscribe") {  // Use a string for ID comparison
-        yOffset = -200;
-      } else {
-        yOffset = -100;
-      }
-      // Adjust offset based on header height
-      const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
+  //   if (section) {
+  //     if (section.id === "subscribe") {  // Use a string for ID comparison
+  //       yOffset = -200;
+  //     } else {
+  //       yOffset = -100;
+  //     }
+  //     // Adjust offset based on header height
+  //     const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+  //     window.scrollTo({ top: y, behavior: "smooth" });
+  //   }
+  // };
   useEffect(() => {
     localStorage.setItem("userlogin", JSON.stringify(userlogin));
   }, [userlogin]);
 
+  const handleNavigation = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate('/', { state: { sectionId } }) // Redirect to root and pass sectionId
+    } else {
+      scrollToSection(sectionId)
+    }
+  }
+  useEffect(() => {
+    if (location.state?.sectionId) {
+      setTimeout(() => {
+        // Add a small delay to ensure scrolling works after navigation
+        scrollToSection(location.state.sectionId)
+      }, 100)
+    }
+  }, [location])
+
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id)
+    if (section) {
+      let yOffset = id === 'subscribe' ? -200 : -100 // Adjust offset for each section
+      const y = section.getBoundingClientRect().top + window.scrollY + yOffset
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    }
+  }
   // const dark = false
   return (
     <header
@@ -351,10 +375,27 @@ export default function Header({
             &times;
           </span>
 
-          <div className="H sections-container">
+             <div className="H sections-container">
+            <h3 className="sett">Sections</h3>
+            <div className="suggestion-box-home">
+              <p onClick={() => handleNavigation('category')} className="H">
+                Category
+              </p>
+              <p onClick={() => handleNavigation('top-products')} className="H">
+                Top Products
+              </p>
+              <p onClick={() => handleNavigation('subscribe')} className="H">
+                Subscription
+              </p>
+              <p onClick={() => handleNavigation('testimonials')} className="H">
+                Testimonials
+              </p>
+            </div>
+          </div>
+
+          {/* <div className="H sections-container">
             <h3 >Sections</h3>
             <div className="suggestion-box-home">
-              {/* <p onClick={() => scrollToSection("hero")} className='H'>Top</p> */}
               <p onClick={() => scrollToSection('category')} className="H">
                 Category
               </p>
@@ -368,7 +409,7 @@ export default function Header({
                 Testimonials
               </p>
             </div>
-          </div>
+          </div> */}
 
           <h3
             className="H"
