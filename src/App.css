@@ -564,7 +564,7 @@ h3 {
 }
 
 .ham .underline {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   color: #a870f1;
 }
 
