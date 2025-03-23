@@ -49,6 +49,10 @@ const ContactUs = () => {
 
       // After form submission, navigate to /contact/feedback
       navigate('feedback') // Programmatically navigate to /contact/feedback
+
+      setTimeout(() => {
+        navigate('/contact');
+      }, 3000);
     } catch (error) {
       console.error('Error submitting feedback:', error)
       alert('An error occurred while submitting your feedback.')
