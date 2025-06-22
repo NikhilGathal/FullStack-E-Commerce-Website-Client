@@ -19,6 +19,11 @@
   color: #a870f1;
 }
 
+#wel:hover 
+{
+  cursor: default;
+}
+
 .suggestion-box {
   position: absolute;
   top: 50px; 
