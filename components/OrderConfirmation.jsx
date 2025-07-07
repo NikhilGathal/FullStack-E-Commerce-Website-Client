@@ -6,8 +6,10 @@ const OrderConfirmation = () => {
   const location = useLocation()
   const { username, cartItems, totalPrice ,order_Id} = location.state || {}
 
-  console.log(order_Id);
+  // console.log(order_Id);
   
+
+
 
   // Fetch details (common for user and admin)
   const fetchDetailsFromDB = async (username) => {
@@ -123,10 +125,15 @@ const OrderConfirmation = () => {
       console.error('User or admin details not found')
     }
   }
-
   React.useEffect(() => {
-    sendOrderEmail()
-  }, [])
+  const hasSentEmail = localStorage.getItem(`emailSentForOrder_${order_Id}`);
+
+  if (!hasSentEmail && username && cartItems) {
+    sendOrderEmail();
+    localStorage.setItem(`emailSentForOrder_${order_Id}`, "true"); // ✅ Set flag
+  }
+}, []);
+
 
   return (
     <>

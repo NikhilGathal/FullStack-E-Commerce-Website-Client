@@ -29,7 +29,7 @@ export default function Header({
   checkuserlogin,
   userlogin
 }) {
-  console.log('from header ' + userlogin);
+  // console.log('from header ' + userlogin);
   // const isAdmin = localStorage.getItem('isAdmin')
   const location = useLocation()
   const [dbname, setDbname] = useState('')
@@ -479,6 +479,9 @@ export default function Header({
                     <Link to="/Emailslist">
                       <p>Subscription</p>
                     </Link>
+                     <Link to="/OutOfStockProducts">
+                        <p>Out of Stock</p>
+                      </Link>
                     <Link to="/FeedbacksList">
                       <p>Feedbacks</p>
                     </Link>

@@ -27,9 +27,9 @@ import ImageContainer from '../components/ImageContainer'
 export default function Home() {
   const [query, setquery] = useState('')
   const [query1, setquery1] = useState('')
-  const productsList = useSelector(getAllProducts)
+  const productsList = useSelector((state) => state.products.list)
   const [filteredProducts, setFilteredProducts] = useState([]);
-  // console.log(productsList);
+  // console.log(filteredProducts);
 
   // console.log(productsList[0]);
 
@@ -175,7 +175,7 @@ export default function Home() {
                 key={id}
                 productId={id}
                 title={title}
-                rating={rating.rate}
+                rating={rating}
                 price={price}
                 imageUrl={image}
               />

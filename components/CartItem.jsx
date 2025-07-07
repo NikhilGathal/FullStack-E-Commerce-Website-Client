@@ -19,6 +19,25 @@ export default function CartItem({
   let cartKey = 'cartItems';
   const [userId, setUserId] = useState(null)
 
+   const [productStock, setProductStock] = useState(null);
+    useEffect(() => {
+    const fetchProductCount = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/products/${productId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setProductStock(data.rating?.count || 0);
+        } else {
+          console.error("Failed to fetch product stock");
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+  
+    fetchProductCount();
+  }, [productId]);
+
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -54,120 +73,196 @@ export default function CartItem({
   
   // Empty dependency array to run the effect only once on mount
 
-  const handleRemove = () => {
-    if (userId) {
-      fetch(
-        `http://localhost:8080/api/cart/remove?userId=${userId}&productId=${productId}`,
-        {
-          method: 'DELETE', // Use DELETE method to remove the item
-        }
-      )
-        .then((response) => response.text()) // Use .text() to handle plain text response
-        .then((data) => {
-          console.log('Response:', data) // Log the response to check if it's plain text
-          // Handle the plain text response
-          if (data === 'Product removed from cart') {
-            dispatch(removeCartItem({ productId })) // Dispatch action to Redux to remove the item from the cart
-          }
-        })
-        .catch((error) => {
-          console.error('Error removing item from cart:', error)
-        })
-    } else {
+  // const handleRemove = () => {
+  //   if (userId) {
+  //     fetch(
+  //       `http://localhost:8080/api/cart/remove?userId=${userId}&productId=${productId}`,
+  //       {
+  //         method: 'DELETE', // Use DELETE method to remove the item
+  //       }
+  //     )
+  //       .then((response) => response.text()) // Use .text() to handle plain text response
+  //       .then((data) => {
+  //         console.log('Response:', data) // Log the response to check if it's plain text
+  //         // Handle the plain text response
+  //         if (data === 'Product removed from cart') {
+  //           dispatch(removeCartItem({ productId })) // Dispatch action to Redux to remove the item from the cart
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error removing item from cart:', error)
+  //       })
+  //   } else {
       
-      let storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
-      storedCart = storedCart.filter((item) => item.productId !== productId)
+  //     let storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
+  //     storedCart = storedCart.filter((item) => item.productId !== productId)
 
-      // Save updated cart to localStorage
-      localStorage.setItem(cartKey, JSON.stringify(storedCart))
+  //     // Save updated cart to localStorage
+  //     localStorage.setItem(cartKey, JSON.stringify(storedCart))
 
-      // Dispatch to update Redux store
-      dispatch(removeCartItem({ productId }))
-      console.log('Removed item from localStorage cart:', storedCart)
+  //     // Dispatch to update Redux store
+  //     dispatch(removeCartItem({ productId }))
+  //     console.log('Removed item from localStorage cart:', storedCart)
+  //   }
+  // }
+
+const handleRemove = async () => {
+  const cartKey = 'cartItems';
+console.log(userId);
+
+  if (userId) {
+    try {
+      // Step 1: Fetch the quantity of the item from the backend cart
+      const res = await fetch(`http://localhost:8080/api/cart/item?userId=${userId}&productId=${productId}`);
+      if (!res.ok) {
+        console.error('Failed to fetch cart item');
+        return;
+      }
+      const cartItem = await res.json();
+      const removedQuantity = cartItem.quantity || 0;
+
+      // Step 2: Increase the product stock in the database
+      await fetch(`http://localhost:8080/api/products/stock/${productId}/${removedQuantity}`, {
+        method: 'PUT',
+      });
+      setProductStock(prev => Math.max(prev + removedQuantity, 0)); 
+
+      // Step 3: Remove the item from the user's cart
+      const response = await fetch(
+        `http://localhost:8080/api/cart/remove?userId=${userId}&productId=${productId}`,
+        { method: 'DELETE' }
+      );
+
+      const result = await response.text();
+      if (result === 'Product removed from cart') {
+        dispatch(removeCartItem({ productId }));
+        console.log('Item removed and stock restored successfully.');
+      }
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
     }
-  }
 
-  const handleDecreaseQuantity = () => {
-    if (userId) {
-      fetch(
+  } else {
+    // 🔹 For guest/localStorage users (fallback)
+    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    const itemToRemove = storedCart.find(item => item.productId === productId);
+    const removedQuantity = itemToRemove ? itemToRemove.quantity : 0;
+
+    await fetch(`http://localhost:8080/api/products/stock/${productId}/${removedQuantity}`, {
+      method: 'PUT',
+    });
+
+    const updatedCart = storedCart.filter(item => item.productId !== productId);
+    localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+
+    dispatch(removeCartItem({ productId }));
+    console.log('Removed from localStorage cart and updated stock.');
+  }
+};
+
+
+const handleDecreaseQuantity = async () => {
+  const cartKey = 'cartItems';
+
+  if (userId) {
+    try {
+      const response = await fetch(
         `http://localhost:8080/api/cart/decrease?userId=${userId}&productId=${productId}`,
         {
           method: 'PUT',
         }
-      )
-        .then((response) => response.text()) // Use .text() to handle plain text response
-        .then((data) => {
-          console.log('Response:', data) // Log the response to check if it's plain text
-          // Handle the plain text response
-          if (data === 'Quantity decreased') {
-            dispatch(decreaseCartItemQuantity({ productId })) // Dispatch action to Redux
-          }
-        })
-        .catch((error) => {
-          console.error('Error decreasing quantity:', error)
-        })
-    } else {
-      // LocalStorage operation
-      let storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
-      const existingProductIndex = storedCart.findIndex(
-        (item) => item.productId === productId
-      )
+      );
 
-      if (existingProductIndex !== -1) {
-        storedCart[existingProductIndex].quantity -= 1
-        if (storedCart[existingProductIndex].quantity <= 0) {
-          storedCart.splice(existingProductIndex, 1) // Remove item if quantity reaches 0
-        }
+      const data = await response.text();
+      console.log('Response:', data);
+
+      if (data === 'Quantity decreased') {
+        dispatch(decreaseCartItemQuantity({ productId }));
+
+        // Increase stock in DB since we decreased from cart
+        await fetch(`http://localhost:8080/api/products/stock/${productId}/1`, {
+          method: 'PUT',
+        });
       }
-
-      // Save updated cart to localStorage
-      localStorage.setItem(cartKey, JSON.stringify(storedCart))
-
-      // Dispatch to update Redux store
-      dispatch(decreaseCartItemQuantity({ productId }))
-      console.log('Decreased quantity in localStorage cart:', storedCart)
+    } catch (error) {
+      console.error('Error decreasing quantity:', error);
     }
-  }
+  } else {
+    // LocalStorage operation for guest users
+    let storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    const existingProductIndex = storedCart.findIndex(
+      (item) => item.productId === productId
+    );
 
-  const handleIncreaseQuantity = () => {
-    if (userId) {
-      fetch(
+    if (existingProductIndex !== -1) {
+      storedCart[existingProductIndex].quantity -= 1;
+      if (storedCart[existingProductIndex].quantity <= 0) {
+        storedCart.splice(existingProductIndex, 1);
+      }
+    }
+
+    localStorage.setItem(cartKey, JSON.stringify(storedCart));
+
+    dispatch(decreaseCartItemQuantity({ productId }));
+    console.log('Decreased quantity in localStorage cart:', storedCart);
+
+    // Increase stock in DB for guest users as well (optional)
+    await fetch(`http://localhost:8080/api/products/stock/${productId}/1`, {
+      method: 'PUT',
+    });
+  }
+};
+
+const handleIncreaseQuantity = async () => {
+  const cartKey = 'cartItems';
+
+  if (userId) {
+    try {
+      const response = await fetch(
         `http://localhost:8080/api/cart/increase?userId=${userId}&productId=${productId}`,
         {
           method: 'PUT',
         }
-      )
-        .then((response) => response.text())
-        .then((data) => {
-          console.log('Response:', data) // Check if the response is plain text
-          // Optionally handle the plain text response
-          if (data === 'Quantity increased') {
-            dispatch(increaseCartItemQuantity({ productId }))
-          }
-        })
-        .catch((error) => {
-          console.error('Error increasing quantity:', error)
-        })
-    } else {
-      let storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
-      const existingProductIndex = storedCart.findIndex(
-        (item) => item.productId === productId
       );
-  
-      if (existingProductIndex !== -1) {
-        storedCart[existingProductIndex].quantity += 1;
-      } else {
-        storedCart.push({ productId, quantity: 1 });
+
+      const data = await response.text();
+      console.log('Response:', data);
+
+      if (data === 'Quantity increased') {
+        dispatch(increaseCartItemQuantity({ productId }));
+
+        // Decrease stock in the DB when quantity is increased
+        await fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
+          method: 'PUT',
+        });
       }
-  
-      // Save updated cart to localStorage
-      localStorage.setItem(cartKey, JSON.stringify(storedCart));
-  
-      // Dispatch to update Redux store
-      dispatch(increaseCartItemQuantity({ productId }));
-      console.log('Increased quantity in localStorage cart:', storedCart)
+    } catch (error) {
+      console.error('Error increasing quantity:', error);
     }
+  } else {
+    // Handle localStorage for guest user
+    let storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    const existingProductIndex = storedCart.findIndex(
+      (item) => item.productId === productId
+    );
+
+    if (existingProductIndex !== -1) {
+      storedCart[existingProductIndex].quantity += 1;
+    } else {
+      storedCart.push({ productId, quantity: 1 });
+    }
+
+    localStorage.setItem(cartKey, JSON.stringify(storedCart));
+    dispatch(increaseCartItemQuantity({ productId }));
+    console.log('Increased quantity in localStorage cart:', storedCart);
+
+    // Decrease stock in backend (optional for guest)
+    await fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
+      method: 'PUT',
+    });
+    setProductStock(prev => Math.max(prev - 1, 0)); 
   }
+};
 
   return (
     <div className="cart-item-container">

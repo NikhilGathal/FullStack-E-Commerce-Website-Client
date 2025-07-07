@@ -19,6 +19,7 @@ const AddNewProduct = () => {
   const [newDescription, setNewDescription] = useState('')
   const [newImage, setNewImage] = useState('')
   const [newRating, setNewRating] = useState(1)
+  const [newCount, setNewCount] = useState(1) 
 
   const handleSave = async () => {
     // Validate the fields to ensure no field is empty
@@ -55,7 +56,9 @@ const AddNewProduct = () => {
           category: newCategory,
           description: newDescription,
           image: newImage,
-          rating: { rate: newRating },
+          rating: { rate: newRating,
+            count : newCount
+           },
         }
   
         // Step 4: Save the new product to the backend
@@ -96,7 +99,7 @@ const AddNewProduct = () => {
       <div className="update-product-container">
         <div className="update-product-container-content">
           <div>
-            <label>Title:</label>
+            <label className='bb'>Title:</label>
             <input
                placeholder='Enter Title'
               className='newpdt-inp'
@@ -107,7 +110,7 @@ const AddNewProduct = () => {
           </div>
 
           <div>
-            <label>Price:</label>
+            <label className='bb'>Price:</label>
             <input
               type="number"
               placeholder='Enter Price'
@@ -118,8 +121,9 @@ const AddNewProduct = () => {
           </div>
 
           <div className="addnew">
-            <label>Category:</label>
+            <label className='bb'>Category:</label>
             <select
+            className='newpdt-inp'
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
             >
@@ -132,7 +136,7 @@ const AddNewProduct = () => {
           </div>
 
           <div>
-            <label>Description:</label>
+            <label className='bb'>Description:</label>
             <textarea
              className='newpdt-inp'
               value={newDescription}
@@ -142,7 +146,7 @@ const AddNewProduct = () => {
           </div>
 
           <div>
-            <label>Image URL:</label>
+            <label className='bb'>Image URL:</label>
             <input
               type="text"
                className='newpdt-inp'
@@ -153,7 +157,7 @@ const AddNewProduct = () => {
           </div>
 
           <div>
-            <label>Rating:</label>
+            <label className='bb'>Rating:</label>
             <input
               className='newpdt-inp'
               type="number"
@@ -163,6 +167,16 @@ const AddNewProduct = () => {
               max="5"
             />
           </div>
+          { <div>
+  <label className='bb'>Count:</label>
+  <input
+    className='newpdt-inp'
+    type="number"
+    value={newCount}
+    onChange={(e) => setNewCount(Number(e.target.value))}
+    min="1"
+  />
+</div> }
 
           <button className="save" onClick={handleSave}>
             Add

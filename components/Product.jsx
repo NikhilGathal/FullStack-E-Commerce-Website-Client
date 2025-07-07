@@ -7,11 +7,31 @@ import { deleteProduct } from '../store/slices/productsSlice'
 
 export default function Product({ productId, title, rating, price, imageUrl }) {
   const username = localStorage.getItem('username')
+  // console.log(rating.rate);
+  //  console.log('count is '+   rating.count);
   // const existingAdmin = JSON.parse(localStorage.getItem('Admin')) || {}
   // const isAdmin = username === existingAdmin.username;
   const dispatch = useDispatch()
   const navigate = useNavigate() // For navigation to UpdateProduct page
   const [, , , , ,] = useOutletContext()
+  const [productStock, setProductStock] = useState(null);
+  useEffect(() => {
+  const fetchProductCount = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/products/${productId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setProductStock(data.rating?.count || 0);
+      } else {
+        console.error("Failed to fetch product stock");
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
+
+  fetchProductCount();
+}, [productId]);
   // Handle delete for admin
   const isAdmin = localStorage.getItem('isAdmin')
   const handleDelete = (productId) => {
@@ -131,6 +151,18 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
         if (response.ok) {
           // Step 2: Dispatch the action after successful addition
           dispatch(addCartItem({ productId }))
+
+
+          await fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
+  method: 'PUT',
+});
+setProductStock(prev => Math.max(prev - 1, 0)); 
+
+
+
+
+
+
         } else {
           console.error('Failed to add item to cart')
         }
@@ -138,6 +170,8 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
         console.error('Error adding item to cart:', error)
       }
     }
+
+
   }
   // Handle add to wishlist
   const handleAddToWishList = async () => {
@@ -210,20 +244,29 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
         </Link>
       </div>
       <div className="price-rating-container">
-        <p className="rating">{+rating} ★ ★ ★ ★</p>
+        <p className="rating">{+rating.rate} ★ ★ ★ ★</p>
+         {localStorage.getItem('isAdmin') === 'true' && (
+  <p className="price">Stock : {productStock}</p>
+)}
         <p className="price">${price}</p>
       </div>
-      <div className="cta-container">
+       <div className="cta-container">
         { localStorage.getItem('isAdmin') === 'true' ? (
           <>
-            <button onClick={() => handleDelete(productId)}>Remove Product</button>
-            <button onClick={handleUpdateProduct}>Edit Product</button>
+            <button onClick={() => handleDelete(productId)}>Remove </button>
+            <button onClick={handleUpdateProduct}>Edit </button>
           </>
         ) : (
-          <>
-            <button onClick={() => addToCart(productId, 1)}>Add to Cart</button>
-            <button onClick={handleAddToWishList}>Add to WishList</button>
-          </>
+           <>
+      {productStock > 0 ? (
+        <button onClick={() => addToCart(productId, 1)}>Add to Cart</button>
+      ) : (
+        <button disabled style={{ backgroundColor: '#ccc', cursor: 'not-allowed' }}>
+          Out of Stock
+        </button>
+      )}
+      <button onClick={handleAddToWishList}>Add to WishList</button>
+    </>
         )}
       </div>
     </div>
