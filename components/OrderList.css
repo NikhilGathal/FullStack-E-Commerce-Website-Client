@@ -17,6 +17,9 @@
 {
   color: var(--text-color);
   margin-top: 100px;
+}.order-container h1 
+{
+  color: var(--text-color);
 }
 
     

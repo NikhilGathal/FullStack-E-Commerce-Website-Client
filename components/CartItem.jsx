@@ -20,6 +20,8 @@ export default function CartItem({
   const [userId, setUserId] = useState(null)
 
    const [productStock, setProductStock] = useState(null);
+   console.log('rerendered' +  productStock);
+   
     useEffect(() => {
     const fetchProductCount = async () => {
       try {
@@ -176,14 +178,21 @@ const handleDecreaseQuantity = async () => {
       const data = await response.text();
       console.log('Response:', data);
 
-      if (data === 'Quantity decreased') {
-        dispatch(decreaseCartItemQuantity({ productId }));
+     if (data === 'Quantity decreased') {
+  dispatch(decreaseCartItemQuantity({ productId }));
 
-        // Increase stock in DB since we decreased from cart
-        await fetch(`http://localhost:8080/api/products/stock/${productId}/1`, {
-          method: 'PUT',
-        });
-      }
+  // Step 1: Update the stock in the database
+  const res = await fetch(`http://localhost:8080/api/products/stock/${productId}/1`, {
+    method: 'PUT',
+  });
+
+  // Step 2: Only update local state if backend update was successful
+  if (res.ok) {
+    setProductStock(prev => Math.max(prev + 1, 0));
+  } else {
+    console.error('Failed to update stock in DB after decreasing quantity');
+  }
+}
     } catch (error) {
       console.error('Error decreasing quantity:', error);
     }
@@ -206,10 +215,7 @@ const handleDecreaseQuantity = async () => {
     dispatch(decreaseCartItemQuantity({ productId }));
     console.log('Decreased quantity in localStorage cart:', storedCart);
 
-    // Increase stock in DB for guest users as well (optional)
-    await fetch(`http://localhost:8080/api/products/stock/${productId}/1`, {
-      method: 'PUT',
-    });
+
   }
 };
 
@@ -228,14 +234,19 @@ const handleIncreaseQuantity = async () => {
       const data = await response.text();
       console.log('Response:', data);
 
-      if (data === 'Quantity increased') {
-        dispatch(increaseCartItemQuantity({ productId }));
+   if (data === 'Quantity increased') {
+  dispatch(increaseCartItemQuantity({ productId }));
 
-        // Decrease stock in the DB when quantity is increased
-        await fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
-          method: 'PUT',
-        });
-      }
+  const res = await fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
+    method: 'PUT',
+  });
+
+  if (res.ok) {
+    setProductStock(prev => Math.max(prev - 1, 0)); // ✅ Only update UI after successful backend update
+  } else {
+    console.error('Failed to update stock in DB');
+  }
+}
     } catch (error) {
       console.error('Error increasing quantity:', error);
     }
@@ -256,11 +267,8 @@ const handleIncreaseQuantity = async () => {
     dispatch(increaseCartItemQuantity({ productId }));
     console.log('Increased quantity in localStorage cart:', storedCart);
 
-    // Decrease stock in backend (optional for guest)
-    await fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
-      method: 'PUT',
-    });
-    setProductStock(prev => Math.max(prev - 1, 0)); 
+   
+   
   }
 };
 
@@ -282,7 +290,11 @@ const handleIncreaseQuantity = async () => {
       <div className="item-quantity">
         <button onClick={handleDecreaseQuantity}>-</button>
         <span>{quantity}</span>
-        <button onClick={handleIncreaseQuantity}>+</button>
+        <button onClick={handleIncreaseQuantity}
+          disabled={productStock === 0}
+  style={productStock === 0 ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}
+ title={productStock === 0 ? 'You reached max available stock' : ''}
+        >+</button>
       </div>
       <div className="item-total">${quantity * price}</div>
       <div>
