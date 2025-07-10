@@ -212,11 +212,16 @@ const ItemDetail = () => {
         if (response.ok) {
           // Step 2: Dispatch the action after successful addition
           dispatch(addCartItem({ productId }))
-           fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
-  method: 'PUT',
-});
+          const stockRes = await fetch(
+    `http://localhost:8080/api/products/stock/${productId}/-1`,
+    { method: 'PUT' }
+  );
 
-setProductStock(prev => Math.max(prev - 1, 0)); 
+  if (stockRes.ok) {
+    setProductStock(prev => Math.max(prev - 1, 0));
+  } else {
+    console.error('❌ Failed to update stock after adding to cart.');
+  }
         } else {
           console.error('Failed to add item to cart')
         }

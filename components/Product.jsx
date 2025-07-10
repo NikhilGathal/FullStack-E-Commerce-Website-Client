@@ -153,10 +153,16 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
           dispatch(addCartItem({ productId }))
 
 
-          await fetch(`http://localhost:8080/api/products/stock/${productId}/-1`, {
-  method: 'PUT',
-});
-setProductStock(prev => Math.max(prev - 1, 0)); 
+         const stockRes = await fetch(
+    `http://localhost:8080/api/products/stock/${productId}/-1`,
+    { method: 'PUT' }
+  );
+
+  if (stockRes.ok) {
+    setProductStock(prev => Math.max(prev - 1, 0));
+  } else {
+    console.error('❌ Failed to update stock in DB after adding to cart.');
+  }
 
 
 

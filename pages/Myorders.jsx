@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Myordersitem from "../components/Myordersitem";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 function Myorders() {
   const [myOrders, setMyOrders] = useState([]);
@@ -77,7 +77,7 @@ function Myorders() {
               {myOrders.map((order, orderIndex) => (
                 <div key={order.id} className="grid-row">
                   <div className="amp grid-item username-column">
-                    {order.id}
+                    {order.order_Id}
                   </div>
                   <div className="amp grid-item user-details-column">
                     {new Date(order.orderDate).toLocaleString("en-IN", {
@@ -107,7 +107,10 @@ function Myorders() {
                   <div className="grid-item orders-column">
   {order.orderItems.map((orderItem, itemIndex) => (
     <div className="ord" key={`${order.id}-${orderItem.product.id}-${itemIndex}`}>
-      <span className="amp">Product: {orderItem.product.title}</span>
+      <Link
+       to={`/${orderItem.product.id}`}>
+      <span className="userord amp">Product: {orderItem.product.title}</span>
+      </Link>
       <span className="amp">Quantity: {orderItem.quantity}</span>
       <span className="amp">Price: ${orderItem.product.price.toFixed(2)}</span>
     </div>

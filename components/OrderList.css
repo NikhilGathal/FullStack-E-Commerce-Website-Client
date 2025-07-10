@@ -36,6 +36,10 @@
   margin-bottom: 10px;
 }
 
+.ord .userord:hover
+{
+   color: #a870f1;;
+}
 .header-item,
 .grid-item {
   padding: 10px;

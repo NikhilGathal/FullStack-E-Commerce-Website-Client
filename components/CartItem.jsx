@@ -20,7 +20,7 @@ export default function CartItem({
   const [userId, setUserId] = useState(null)
 
    const [productStock, setProductStock] = useState(null);
-   console.log('rerendered' +  productStock);
+  //  console.log('rerendered' +  productStock);
    
     useEffect(() => {
     const fetchProductCount = async () => {
@@ -182,15 +182,14 @@ const handleDecreaseQuantity = async () => {
   dispatch(decreaseCartItemQuantity({ productId }));
 
   // Step 1: Update the stock in the database
-  const res = await fetch(`http://localhost:8080/api/products/stock/${productId}/1`, {
+const res = await fetch(`http://localhost:8080/api/products/stock/${productId}/+1`, {
     method: 'PUT',
   });
 
-  // Step 2: Only update local state if backend update was successful
   if (res.ok) {
-    setProductStock(prev => Math.max(prev + 1, 0));
+    setProductStock(prev => Math.max(prev + 1, 0)); // ✅ Only update UI after successful backend update
   } else {
-    console.error('Failed to update stock in DB after decreasing quantity');
+    console.error('Failed to update stock in DB');
   }
 }
     } catch (error) {
