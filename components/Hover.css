@@ -26,7 +26,7 @@
 
 .suggestion-box {
   position: absolute;
-  top: 50px; 
+  top: 46px; 
   left: -32px;
   background-color: var(
     --background-color
@@ -166,8 +166,8 @@
 
 @media (max-width: 1024px) {
   .suggestion-box {
-    top: 40px;
-     left: -22px;
+    top: 37px;
+     left: -19px;
     padding: 5px;
     font-size: 11px !important;
   }
@@ -182,7 +182,7 @@
 @media (min-width: 697px) and (max-width: 805px) {
   .suggestion-box {
     top: 28px;
-    left: -26px;
+    left: -20px;
     font-size: 9px !important;
   }
   .suggestion-box-home {
