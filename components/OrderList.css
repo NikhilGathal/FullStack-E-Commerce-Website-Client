@@ -1,10 +1,14 @@
+.addmm {
+  padding-inline: 16px;
+}
+
 .order-grid {
   --background-color: white;
   --text-color: black;
   --elements-color: white;
   --header-back: #f1f1f1;
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 2fr 1fr 1fr;; /* Default layout with four columns */
   gap: 10px;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -13,21 +17,30 @@
   margin-inline: auto;
   margin-top: 0px !important;
 }
-.ordhead 
-{
-  color: var(--text-color);
-  margin-top: 100px;
-}.order-container h1 
-{
-  color: var(--text-color);
-}
-
-    
 .order-grid.dark {
   --background-color: #2c4760;
   --text-color: white;
   --elements-color: hsl(209, 23%, 22%);
   --header-back: hsl(209, 23%, 22%);
+}
+
+.ordhead 
+{
+  color: var(--text-color);
+  margin-top: 100px;
+}
+.ord .userord:hover
+{
+   color: #a870f1;;
+}
+.returnb 
+{
+  font-size: 15px;
+  padding: 15px;
+}
+.order-container h1 
+{
+  color: var(--text-color);
 }
 
 .grid-header {
@@ -36,10 +49,6 @@
   margin-bottom: 10px;
 }
 
-.ord .userord:hover
-{
-   color: #a870f1;;
-}
 .header-item,
 .grid-item {
   padding: 10px;
@@ -57,29 +66,34 @@
 
 .grid-item {
   display: flex;
-  /* align-items: center; */
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 8px;
   background-color: var(--background-color);
 }
 
+/* Username Column */
 .username-column {
   grid-column: 1;
 }
 
+/* User Details Column */
 .user-details-column {
   grid-column: 2;
 }
 
+/* Orders Column */
 .orders-column {
   grid-column: 3;
 }
 
+/* Total Price Column */
 .total-price-column {
   grid-column: 4;
 }
 
+/* Grid Item Content */
 .grid-item span {
   display: block;
   margin: 5px 0;
@@ -90,101 +104,159 @@
   color: var(--text-color);
 }
 
+/* Styling for Orders */
 .ord {
   display: flex;
   flex-direction: column;
-  /* gap: 8px; */
+  gap: 8px;
 }
-
-.ord span {
-  display: block;
-  /* text-align: left; */
-  margin: 4px 0;
-  font-size: 0.9em;
-}
-.username-column p 
+.username-column p
 {
   margin: 4px 0;
 }
+.user-details-column p 
+{
+  margin: 4px 0;
+}
+.product-details span {
+  display: block;
+  /* text-align: left; */
+  margin: 4px 0;
+}
+.header-item.amp
+{
+    font-size: 1.1em;
+}
+.grid-row .amp 
+{
+  font-size: 1em;
+}
 
-.user-details-column p {
-  margin: 4px 0;
+/* Optional styling for User Details */
+.order-details-column p {
+  margin: 4px 0 ;
   font-size: 0.9em;
   color: var(--text-color);
 }
-.order-column p {
-  margin: 4px 0;
-  font-size: 0.9em;
-  color: var(--text-color);
-}
+
 .admin {
   width: 100%;
   height: calc(100vh - 160px);
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+   flex-direction: column;
 }
 .admin.a {
- margin-block: 80px; 
-}
+  margin-block: 80px; 
+ }
 .admin h1 
 {
   font-size: 45px;
   color: var(--text-color);
 }
 
-.grid-row .amp 
-{
-  font-size: 0.9em;
-}
-
 @media (max-width: 983px) {
   .order-grid {
     margin-top: 80px;
   }
+  .addmm {
+    padding-inline: 16px; /* Ensure consistent padding on small screens */
+  }
+      .cancel-btn{
+    font-size: 16px;
+    padding: 7px;
+    border: 2px solid;
+  }
+}
+.grid-item span{
+  font-size: 30px;
 }
 
-@media (max-width: 630px) {
-  .order-grid .amp {
-    font-size: 14px;
+@media(max-width :860px)
+{
+  .header-item.amp
+{
+    font-size: 1em;
+}
+.header-item
+{
+  padding: 5px;
+}
+.grid-body
+{
+  font-size: 12px;
+}
+.grid-item span{
+  font-size: 12px;
+}
+}
+@media (max-width: 660px) {
+  .order-grid 
+  {
+    gap: 5px;
   }
+
+  .order-grid .amp {
+    font-size: 12px;
+  }
+  .grid-body
+{
+  font-size: 10px !important;
+}
+.grid-item span{
+  font-size: 12px;
+}
   .grid-item {
-    padding: 6px;
+    padding: 6px ;
   }
 }
 
-@media (max-width: 573px) {
+@media (max-width: 579px) {
   .order-grid .amp {
-    font-size: 11px;
+    font-size: 10px;
   }
   .grid-item {
     padding: 5px;
   }
+    .cancel-btn{
+    font-size: 9px;
+    padding: 5px;
+  }
 }
 
-@media (max-width: 490px) {
+@media (max-width: 516px) {
   .order-grid .amp {
     font-size: 9px;
   }
   .grid-item {
     padding: 3px;
   }
+  .cancel-btn{
+    font-size: 6px;
+    padding: 5px;
+  }
+    .username-column p 
+  {
+    font-size: 8px !important;
+  }
+  .grid-item span{
+  font-size: 8px;
+}
 }
 
 @media (max-width: 396px) {
   .order-grid .amp {
-    font-size: 6px;
+    font-size: 6px !important;
+  }
+  .username-column p 
+  {
+    font-size: 6px !important;
   }
   .grid-item {
     padding: 2px;
   }
+  .grid-item span{
+  font-size: 6px;
 }
-
-
-
-
-
-
-
-
+}

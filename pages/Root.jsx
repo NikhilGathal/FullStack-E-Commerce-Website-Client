@@ -38,7 +38,7 @@ function Root() {
       <Subscribe id="subscribe" />
       <Banner id="banner" />
       <Testimonials id="testimonials" />
-      <Footer dark={dark} />
+      <Footer id="foot" dark={dark} />
     </>
   )
 }

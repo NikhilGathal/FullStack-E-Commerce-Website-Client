@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import { useNavigate, useLocation, useOutletContext, Outlet } from 'react-router-dom'
+import {
+  useNavigate,
+  useLocation,
+  useOutletContext,
+  Outlet,
+} from 'react-router-dom'
 
 const ContactUs = () => {
   const [, dark] = useOutletContext()
@@ -22,6 +27,15 @@ const ContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const isAdminLog = localStorage.getItem('isadminlog') === 'true'
+    const userLogin = localStorage.getItem('userlogin') === 'true'
+
+    // Block feedback submission if not a logged-in user or if admin is logged in
+    if (!userLogin || isAdminLog) {
+      alert('Only logged-in users (non-admins) can submit feedback.')
+      return
+    }
 
     // Create a new feedback object
     const newFeedback = {
@@ -51,8 +65,8 @@ const ContactUs = () => {
       navigate('feedback') // Programmatically navigate to /contact/feedback
 
       setTimeout(() => {
-        navigate('/contact');
-      }, 3000);
+        navigate('/contact')
+      }, 3000)
     } catch (error) {
       console.error('Error submitting feedback:', error)
       alert('An error occurred while submitting your feedback.')
@@ -66,7 +80,7 @@ const ContactUs = () => {
       {!isFormRoute && (
         <main className="contact-main">
           <div className={`contact-us-container ${dark ? 'dark' : ''}`}>
-            <h1 className='cnt'>Contact Us</h1>
+            <h1 className="cnt">Contact Us</h1>
             <p style={{ textAlign: 'center' }}>
               If you have any questions or feedback, please reach out to us!
             </p>
@@ -109,7 +123,7 @@ const ContactUs = () => {
           </div>
         </main>
       )}
-       <Outlet/>
+      <Outlet />
       {/* Render the outlet to allow for nested routes */}
     </>
   )

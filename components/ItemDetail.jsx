@@ -19,24 +19,26 @@ const ItemDetail = () => {
   const [userId, setUserId] = useState(null)
   const navigate = useNavigate()
 
-  const [productStock, setProductStock] = useState(null);
+  const [productStock, setProductStock] = useState(null)
   useEffect(() => {
-  const fetchProductCount = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/products/${productId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setProductStock(data.rating?.count || 0);
-      } else {
-        console.error("Failed to fetch product stock");
+    const fetchProductCount = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/products/${productId}`
+        )
+        if (response.ok) {
+          const data = await response.json()
+          setProductStock(data.rating?.count || 0)
+        } else {
+          console.error('Failed to fetch product stock')
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error)
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
     }
-  };
 
-  fetchProductCount();
-}, [productId]);
+    fetchProductCount()
+  }, [productId])
 
   const handleUpdateProduct = () => {
     navigate(`/update-product/${productId}`, {
@@ -78,38 +80,8 @@ const ItemDetail = () => {
       .catch((error) => {
         console.error('Error deleting product:', error)
       })
-     setTimeout(() => navigate('/Home'), 1000);
+    setTimeout(() => navigate('/Home'), 1000)
   }
-
-  // useEffect(() => {
-  //   // Fetch item details from localStorage
-  //   const fetchItemFromLocalStorage = () => {
-  //     try {
-
-  //       fetch('http://localhost:8080/api/products')
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         // console.log(data);
-
-  //         setpdt(data)
-  //         console.log(pdt);
-
-  //       })
-  //         // JSON.parse(localStorage.getItem('productsList')) || []
-  //       const product = pdt.find((p) => p.id === productId) // Find the product by ID
-  //       if (!product) {
-  //         throw new Error('Product not found')
-  //       }
-  //       setItem(product) // Set the product as the state
-  //       setLoading(false) // Set loading to false
-  //     } catch (err) {
-  //       setError(err.message) // Handle error
-  //       setLoading(false) // Set loading to false
-  //     }
-  //   }
-
-  //   fetchItemFromLocalStorage()
-  // }, [productId])
 
   useEffect(() => {
     // Fetch item details from the backend API
@@ -191,16 +163,13 @@ const ItemDetail = () => {
         storedCart[existingProductIndex].quantity += quantity // Update quantity
       } else {
         storedCart.push({ productId, quantity }) // Add new product
-      }
+      } // Save updated cart to localStorage
 
-      // Save updated cart to localStorage
-      localStorage.setItem(cartKey, JSON.stringify(storedCart))
+      localStorage.setItem(cartKey, JSON.stringify(storedCart)) // Dispatch to update Redux store
 
-      // Dispatch to update Redux store
       dispatch(addCartItem({ productId }))
       console.log('Added item to localStorage cart:', storedCart)
     } else {
-      // console.log(userId)
       try {
         // Step 1: Add item to the cart on the backend
         const response = await fetch(
@@ -209,27 +178,32 @@ const ItemDetail = () => {
             method: 'POST',
           }
         )
-        if (response.ok) {
-          // Step 2: Dispatch the action after successful addition
-          dispatch(addCartItem({ productId }))
-          const stockRes = await fetch(
-    `http://localhost:8080/api/products/stock/${productId}/-1`,
-    { method: 'PUT' }
-  );
 
-  if (stockRes.ok) {
-    setProductStock(prev => Math.max(prev - 1, 0));
-  } else {
-    console.error('❌ Failed to update stock after adding to cart.');
-  }
-        } else {
-          console.error('Failed to add item to cart')
-        }
+        if (!response.ok) {
+          console.error('❌ Failed to add item to cart')
+          return // ⛔ Stop here if the API call failed
+        } // Step 2: Dispatch the action after successful addition
+
+        dispatch(addCartItem({ productId })) // Step 3: Update the stock only if cart addition succeeded
+
+        // const stockRes = await fetch(
+        //   `http://localhost:8080/api/products/stock/${productId}/-1`,
+        //   { method: 'PUT' }
+        // )
+
+        // if (stockRes.ok) {
+        //   setProductStock((prev) => Math.max(prev - 1, 0))
+        // } else {
+        //   alert('❌ Failed to update stock after adding to cart.')
+        //   return
+        // }
       } catch (error) {
-        console.error('Error adding item to cart:', error)
+        console.error('❌ Error adding item to cart:', error)
+        return // ⛔ Stop execution if an exception occurred
       }
     }
   }
+
   // Handle add to wishlist
   const handleAddToWishList = async () => {
     const wishKey = 'wishItems' // Use username-based key or a default key
@@ -316,32 +290,49 @@ const ItemDetail = () => {
             </span>
           </div>
 
-       <div className="item-button">
-  {localStorage.getItem('isAdmin') === 'true' ? (
-    <>
-      <button onClick={() => handleDelete(productId)}>
-        Remove Product
-      </button>
-      <button onClick={handleUpdateProduct}>Edit Product</button>
-    </>
-  ) : (
-    <>
-      {productStock > 0 ? (
-        <button onClick={() => addToCart(productId, 1)}>
-          Add to Cart
-        </button>
-      ) : (
-        <button disabled style={{ backgroundColor: '#ccc', cursor: 'not-allowed' }}>
-          Out of Stock
-        </button>
-      )}
-      <button onClick={handleAddToWishList}>Add to WishList</button>
-    </>
-  )}
-</div>
+          <div className="item-button">
+            {localStorage.getItem('isAdmin') === 'true' ? (
+              <>
+                <button onClick={() => handleDelete(productId)}>
+                  Remove Product
+                </button>
+
+                <p
+                  className="outofs"
+                  style={
+                    productStock === 0
+                      ? { color: 'red', fontWeight: 'bold' }
+                      : {}
+                  }
+                >
+                  {productStock === 0
+                    ? 'Out of Stock'
+                    : `Stock: ${productStock}`}
+                </p>
+
+                <button onClick={handleUpdateProduct}>Edit Product</button>
+              </>
+            ) : (
+              <>
+                {productStock > 0 ? (
+                  <button onClick={() => addToCart(productId, 1)}>
+                    Add to Cart
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    style={{ backgroundColor: '#ccc', cursor: 'not-allowed' }}
+                  >
+                    Out of Stock
+                  </button>
+                )}
+                <button onClick={handleAddToWishList}>Add to WishList</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
-      <Footer dark={dark} />
+      {/* <Footer dark={dark} /> */}
     </>
   )
 }

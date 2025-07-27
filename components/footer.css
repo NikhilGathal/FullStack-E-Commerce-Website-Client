@@ -132,3 +132,44 @@
     height: 80px; /* Adjust as per your logo size */
   }
 }
+
+@media (min-width: 1014px )
+{
+.footer 
+{
+  min-height: 63vh;
+}
+.footer-right {
+  gap: 50px;
+}
+.footer-brand .icon
+{
+   height:110px;
+   width:110px
+}
+.footer-logo {
+  height: 100px !important; /* Adjust as per your logo size */
+}
+.footer-brand {
+  gap: 50px;
+}
+
+.download-btn {
+  font-size: 18px;
+  padding: 17px 17px !important;
+}
+.footer-column h3 {
+  margin-bottom: 50px;
+  font-size: 30px;
+}
+.social-icons a {
+  font-size: 30px !important;
+}
+.footer-column ul li a {
+  margin-top: 50px !important;  
+}
+.footer-column ul li {
+  margin-top: 30px;
+  font-size: 20px;
+}
+}

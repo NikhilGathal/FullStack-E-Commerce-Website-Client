@@ -7,31 +7,29 @@ import { deleteProduct } from '../store/slices/productsSlice'
 
 export default function Product({ productId, title, rating, price, imageUrl }) {
   const username = localStorage.getItem('username')
-  // console.log(rating.rate);
-  //  console.log('count is '+   rating.count);
-  // const existingAdmin = JSON.parse(localStorage.getItem('Admin')) || {}
-  // const isAdmin = username === existingAdmin.username;
   const dispatch = useDispatch()
   const navigate = useNavigate() // For navigation to UpdateProduct page
   const [, , , , ,] = useOutletContext()
-  const [productStock, setProductStock] = useState(null);
+  const [productStock, setProductStock] = useState(null)
   useEffect(() => {
-  const fetchProductCount = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/products/${productId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setProductStock(data.rating?.count || 0);
-      } else {
-        console.error("Failed to fetch product stock");
+    const fetchProductCount = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/products/${productId}`
+        )
+        if (response.ok) {
+          const data = await response.json()
+          setProductStock(data.rating?.count || 0)
+        } else {
+          console.error('Failed to fetch product stock')
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error)
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
     }
-  };
 
-  fetchProductCount();
-}, [productId]);
+    fetchProductCount()
+  }, [productId])
   // Handle delete for admin
   const isAdmin = localStorage.getItem('isAdmin')
   const handleDelete = (productId) => {
@@ -63,21 +61,7 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
         console.error('Error deleting product:', error)
       })
   }
-  // Handle add to cart
-  const handleAddToCart = () => {
-    // const cartKey = username ? `${username}cart` : 'cartItems';
-    // let storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
-    // const existingProductIndex = storedCart.findIndex(item => item.productId === productId);
-    // if (existingProductIndex !== -1) {
-    //   storedCart[existingProductIndex].quantity += 1;
-    // } else {
-    //   storedCart.push({ productId, quantity: 1 });
-    // }
-    // // Save updated cart
-    // localStorage.setItem(cartKey, JSON.stringify(storedCart));
-    // // Dispatch to add cart in Redux
-    // dispatch(addCartItem({ productId }));
-  }
+
   // database
 
   const [userId, setUserId] = useState(null)
@@ -86,34 +70,34 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
     const fetchUserId = async () => {
       try {
         // Step 1: Retrieve the username from localStorage
-        const username = localStorage.getItem('username');
+        const username = localStorage.getItem('username')
         if (!username) {
-          console.warn('Username not found in localStorage');
-          return; // Early return if username is not found, so the rest of the code doesn't run
+          console.warn('Username not found in localStorage')
+          return // Early return if username is not found, so the rest of the code doesn't run
         }
-  
+
         // Step 2: Fetch user details by username to get the userId
         const userResponse = await fetch(
           `http://localhost:8080/api/users/${username}`
-        );
-  
+        )
+
         if (!userResponse.ok) {
-          console.error('User not found');
-          return;
+          console.error('User not found')
+          return
         }
-  
-        const user = await userResponse.json(); // Assuming the response contains user details including ID
-        setUserId(user.id); // Set userId in state
+
+        const user = await userResponse.json() // Assuming the response contains user details including ID
+        setUserId(user.id) // Set userId in state
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error)
       }
-    };
-  
-    const username = localStorage.getItem('username');
-    if (username) {
-      fetchUserId(); // Only call fetchUserId if username exists
     }
-  }, []);
+
+    const username = localStorage.getItem('username')
+    if (username) {
+      fetchUserId() // Only call fetchUserId if username exists
+    }
+  }, [])
 
   // Add to cart function
   const addToCart = async (productId, quantity = 1) => {
@@ -136,100 +120,96 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
       localStorage.setItem(cartKey, JSON.stringify(storedCart))
 
       // Dispatch to update Redux store
-      dispatch(addCartItem({ productId}))
-      console.log('Added item to localStorage cart:', storedCart)
+      dispatch(addCartItem({ productId }))
     } else {
-      // console.log(userId)
       try {
         // Step 1: Add item to the cart on the backend
         const response = await fetch(
           `http://localhost:8080/api/cart/add?userId=${userId}&productId=${productId}&quantity=${quantity}`,
-          {
-            method: 'POST',
-          }
+          { method: 'POST' }
         )
-        if (response.ok) {
-          // Step 2: Dispatch the action after successful addition
-          dispatch(addCartItem({ productId }))
 
-
-         const stockRes = await fetch(
-    `http://localhost:8080/api/products/stock/${productId}/-1`,
-    { method: 'PUT' }
-  );
-
-  if (stockRes.ok) {
-    setProductStock(prev => Math.max(prev - 1, 0));
-  } else {
-    console.error('❌ Failed to update stock in DB after adding to cart.');
-  }
-
-
-
-
-
-
-        } else {
-          console.error('Failed to add item to cart')
+        if (!response.ok) {
+          alert('❌ Failed to add item to cart')
+          return
         }
+
+        // Step 2: Dispatch the action after successful addition
+        dispatch(addCartItem({ productId }))
+
+        // Step 3: Update stock in DB
+        // const stockRes = await fetch(
+        //   `http://localhost:8080/api/products/stock/${productId}/-1`,
+        //   { method: 'PUT' }
+        // )
+
+        // if (!stockRes.ok) {
+        //   console.error('❌ Failed to update stock in DB after adding to cart.')
+        //   return
+        // }
+
+        // setProductStock((prev) => Math.max(prev - 1, 0))
       } catch (error) {
-        console.error('Error adding item to cart:', error)
+        console.error('❌ Error adding item to cart:', error)
+        alert('❌ Failed to add item to cart')
+
+        return
       }
     }
-
-
   }
+
   // Handle add to wishlist
   const handleAddToWishList = async () => {
-    const wishKey = 'wishItems'; // Use username-based key or a default key
-  
+    const wishKey = 'wishItems' // Use username-based key or a default key
+
     if (!userId) {
       // User is not logged in; manage wishlist in localStorage
-      let storedWish = JSON.parse(localStorage.getItem(wishKey)) || [];
+      let storedWish = JSON.parse(localStorage.getItem(wishKey)) || []
       const existingProductIndex = storedWish.findIndex(
         (item) => item.productId === productId
-      );
-  
+      )
+
       if (existingProductIndex === -1) {
-        storedWish.push({ productId, quantity: 1 }); // Add new product
+        storedWish.push({ productId, quantity: 1 }) // Add new product
       } else {
-        console.log('Product already in wishlist.');
+        console.log('Product already in wishlist.')
       }
-  
+
       // Save updated wishlist to localStorage
-      localStorage.setItem(wishKey, JSON.stringify(storedWish));
-  
+      localStorage.setItem(wishKey, JSON.stringify(storedWish))
+
       // Dispatch to update Redux store
-      dispatch(addWishItem({ productId }));
-      console.log('Added item to localStorage wishlist:', storedWish);
+      dispatch(addWishItem({ productId }))
+      console.log('Added item to localStorage wishlist:', storedWish)
     } else {
-      console.log(userId);
+      console.log(userId)
       try {
         // Step 1: Add item to the wishlist on the backend
-        const wishlistItem = { userId, productId, quantity: 1 }; // Construct the item to send
-  
-        const response = await fetch(`http://localhost:8080/api/wishlist/add?userId=${userId}&productId=${productId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json', // Send JSON data
-          },
-          body: JSON.stringify(wishlistItem), // Send the wishlist item object as the request body
-        });
-  
+        const wishlistItem = { userId, productId, quantity: 1 } // Construct the item to send
+
+        const response = await fetch(
+          `http://localhost:8080/api/wishlist/add?userId=${userId}&productId=${productId}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', // Send JSON data
+            },
+            body: JSON.stringify(wishlistItem), // Send the wishlist item object as the request body
+          }
+        )
+
         if (response.ok) {
           // Step 2: Dispatch the action after successful addition
-          dispatch(addWishItem({ productId }));
+          dispatch(addWishItem({ productId }))
         } else {
-          console.error('Failed to add item to wishlist');
+          console.error('Failed to add item to wishlist')
         }
       } catch (error) {
-        console.error('Error adding item to wishlist:', error);
+        console.error('Error adding item to wishlist:', error)
       }
     }
-  };
-  
-  
-  
+  }
+
   // Handle update product (for admin)
   const handleUpdateProduct = () => {
     navigate(`/update-product/${productId}`, {
@@ -251,28 +231,40 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
       </div>
       <div className="price-rating-container">
         <p className="rating">{+rating.rate} ★ ★ ★ ★</p>
-         {localStorage.getItem('isAdmin') === 'true' && (
-  <p className="price">Stock : {productStock}</p>
-)}
+        {localStorage.getItem('isAdmin') === 'true' && (
+          <p
+            className="price"
+            style={
+              productStock === 0 ? { color: 'red', fontWeight: 'bold' } : {}
+            }
+          >
+            {productStock === 0 ? 'Out of Stock' : `Stock: ${productStock}`}
+          </p>
+        )}
         <p className="price">${price}</p>
       </div>
-       <div className="cta-container">
-        { localStorage.getItem('isAdmin') === 'true' ? (
+      <div className="cta-container">
+        {localStorage.getItem('isAdmin') === 'true' ? (
           <>
             <button onClick={() => handleDelete(productId)}>Remove </button>
             <button onClick={handleUpdateProduct}>Edit </button>
           </>
         ) : (
-           <>
-      {productStock > 0 ? (
-        <button onClick={() => addToCart(productId, 1)}>Add to Cart</button>
-      ) : (
-        <button disabled style={{ backgroundColor: '#ccc', cursor: 'not-allowed' }}>
-          Out of Stock
-        </button>
-      )}
-      <button onClick={handleAddToWishList}>Add to WishList</button>
-    </>
+          <>
+            {productStock > 0 ? (
+              <button onClick={() => addToCart(productId, 1)}>
+                Add to Cart
+              </button>
+            ) : (
+              <button
+                disabled
+                style={{ backgroundColor: '#ccc', cursor: 'not-allowed' }}
+              >
+                Out of Stock
+              </button>
+            )}
+            <button onClick={handleAddToWishList}>Add to WishList</button>
+          </>
         )}
       </div>
     </div>

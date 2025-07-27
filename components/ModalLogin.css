@@ -116,14 +116,6 @@
   background-color: rgba(147, 197, 253, 0.6);
 } 
 
-
-
-
-
-
-
-
-
 @media (max-width: 535px) {
   .modal-box-log {
     width: calc(100% - 32px); 

@@ -2,14 +2,19 @@ import React from 'react'
 import './footer.css' // You will style it in this CSS file
 // import shop from '../assets/Sho.jpg'
 import { Link } from 'react-router-dom'
-const Footer = ({ dark }) => {
+const Footer = ({ dark, id }) => {
   return (
-    <footer  data-aos="zoom-in"   className={`footer ${dark ? 'dark' : ''}`}>
-      <div   className="footer-left">
+    <footer
+      id={id}
+      data-aos="zoom-in"
+      className={`footer ${dark ? 'dark' : ''}`}
+    >
+      <div className="footer-left">
         <div className="footer-brand">
           {/* <img src={shop} alt="Logo" className="footer-logo" /> */}
           <a href="#">
             <svg
+              className="icon"
               stroke="currentColor"
               fill="none"
               strokeWidth="2"
@@ -34,7 +39,7 @@ const Footer = ({ dark }) => {
 
       <div className="footer-right">
         <div className="footer-column">
-          <h4>Shop</h4>
+          <h3>Shop</h3>
           <ul>
             <li>
               <a href="#">Gift cards</a>
@@ -52,7 +57,7 @@ const Footer = ({ dark }) => {
         </div>
 
         <div className="footer-column">
-          <h4>Sell</h4>
+          <h3>Sell</h3>
           <ul>
             <li>
               <a href="#">Sell on OurSite</a>
@@ -70,7 +75,7 @@ const Footer = ({ dark }) => {
         </div>
 
         <div className="footer-column">
-          <h4>About</h4>
+          <h3>About</h3>
           <ul>
             <li>
               <a href="#">Our Company</a>
@@ -82,17 +87,13 @@ const Footer = ({ dark }) => {
               <a href="#">Investors</a>
             </li>
             <li>
-              <a href="#">Careers</a>
-            </li>
-
-            <li>
               <a href="#">Impact</a>
             </li>
           </ul>
         </div>
 
         <div className="footer-column help">
-          <h4>Help</h4>
+          <h3>Help</h3>
           <ul>
             <li>
               <a href="#">Help Center</a>

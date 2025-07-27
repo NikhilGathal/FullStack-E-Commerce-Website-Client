@@ -9,6 +9,7 @@ import {
   removeallCartItem,
 } from '../store/slices/cartSlice'
 import { Link, useNavigate, useOutletContext } from 'react-router-dom'
+import { updateProductStock } from '../store/slices/productsSlice'
 
 export default function Cart() {
   const existingAdmin = JSON.parse(localStorage.getItem('Admin')) || {}
@@ -17,6 +18,7 @@ export default function Cart() {
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(true)
   const cartItems = useSelector(getAllCartItems)
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false)
   // console.log(cartItems);
 
   const navigate = useNavigate()
@@ -70,16 +72,22 @@ export default function Cart() {
   if (isLoading) {
     return (
       <div className="admin">
-      <h1>Loading Cart Items...</h1>
-    </div>
+        <h1>Loading Cart Items...</h1>
+      </div>
+    )
+  }
+
+  if (isPlacingOrder) {
+    return (
+      <div className="admin">
+        <h1 style={{ textAlign: 'center' }}>Processing your order...</h1>
+      </div>
     )
   }
 
   return (
     <>
-      {isLoading ? (
-        <h1 style={{ textAlign: 'center' }}>Loading Cart items...</h1>
-      ) : cartItems.length ? (
+      {cartItems.length ? (
         <main className={`cart-container ${dark ? 'dark' : ''}`}>
           <div className="cart-container">
             <h2 className="item-wish">Cart Items</h2>
@@ -106,58 +114,117 @@ export default function Cart() {
               )}
               <div className="cart-header cart-item-container">
                 <button
-                  onClick={() => {
-                    const order_Id = 'OD' + Date.now()
+                  onClick={async () => {
                     const username = localStorage.getItem('username')
                     const admin = localStorage.getItem('adminname')
+                    const order_Id = 'OD' + Date.now()
 
-                    // Condition 1: Check if Admin exists in localStorage
                     if (!admin) {
-                      alert(
-                        'Sign up as admin first before placing an order. After that, log in as a normal user to place an order.'
-                      )
+                      alert('Sign up as admin first before placing an order.')
                       return
                     }
 
-                    // Condition 2: Check if user is logged in
                     if (!username) {
                       alert('Please login first to place an order')
                       return
                     }
 
-                    const requestBody = {
-                      username: username,
-                      order_Id: order_Id,
-                    }
+                    try {
+                      let allInStock = true
 
-                    fetch('http://localhost:8080/api/orders/place', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify(requestBody),
-                    })
-                      .then((response) => response.text()) // Parse the response as text since it's just a message
-                      .then((data) => {
-                        if (data === 'Order placed successfully!') {
-                          // Clear cart and navigate to the order confirmation page
-                          dispatch(removeallCartItem())
+                      for (const item of cartItems) {
+                        const response = await fetch(
+                          `http://localhost:8080/api/products/${item.id}`
+                        )
+                        if (!response.ok) {
+                          throw new Error(
+                            `Failed to fetch stock for ${item.title}`
+                          )
+                        }
+
+                        const product = await response.json()
+                        const available = product.rating?.count || 0
+
+                        if (available === 0) {
+                          alert(
+                            `"${item.title}" is out of stock. Please remove it from the cart before placing the order.`
+                          )
+                          allInStock = false
+                          break
+                        }
+
+                        if (available < item.quantity) {
+                          alert(
+                            `"${item.title}" has only ${available} in stock. You added ${item.quantity}. Please update your cart then try to place order.`
+                          )
+                          allInStock = false
+                          break
+                        }
+                      }
+
+                      if (!allInStock) {
+                        // setIsPlacingOrder(false)
+                        return
+                      }
+
+                      setIsPlacingOrder(true)
+
+                      for (const item of cartItems) {
+                        const delta = -item.quantity
+                        await fetch(
+                          `http://localhost:8080/api/products/stock/${item.id}/${delta}`,
+                          {
+                            method: 'PUT',
+                          }
+                        )
+                        //  dispatch(
+                        //     updateProductStock({
+                        //       productId: item.id,
+                        //       delta: -item.quantity,
+                        //     })
+                        //   )
+                      }
+
+                      const response = await fetch(
+                        'http://localhost:8080/api/orders/place',
+                        {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({
+                            username,
+                            order_Id,
+                          }),
+                        }
+                      )
+
+                      const result = await response.text()
+
+                      if (result === 'Order placed successfully!') {
+                        // dispatch(removeallCartItem())
+
+                        // ✅ Wait 3 seconds before navigating
+                        setTimeout(() => {
+                          setIsPlacingOrder(false)
                           navigate('/OrderConfirmation', {
                             state: {
                               username,
                               cartItems,
                               totalPrice,
-                              order_Id, // Ensure totalPrice is calculated properly
+                              order_Id,
                             },
+                              
                           })
-                        } else {
-                          alert(data.message || 'Failed to place the order')
-                        }
-                      })
-                      .catch((error) => {
-                        console.error('Error placing order:', error)
-                        alert('An error occurred while placing the order.')
-                      })
+                          dispatch(removeallCartItem())
+                        }, 3000) // 3000ms = 3 seconds
+                      } else {
+                        alert(result || 'Failed to place order. Try again.')
+                      }
+                    } catch (error) {
+                      console.error('Error placing order:', error)
+                      alert('Error placing order. Please try again.')
+                    }
                   }}
                   className="place"
                 >

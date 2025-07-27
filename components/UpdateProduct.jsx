@@ -11,13 +11,16 @@ const UpdateProduct = () => {
   const [, dark] = useOutletContext()
   const [product, setProduct] = useState(null)
 
-  // Get the product from the Redux store by id
+  const isAdminLog = localStorage.getItem('isadminlog') === 'true'
+  useEffect(() => {
+    if (!isAdminLog) {
+      navigate('/')
+    }
+  }, [isAdminLog])
 
-  // using localstorage
-  // const product = useSelector((state) => state.products.list.find(p => p.id === parseInt(id)))
-
-  // using database
-
+  if (!isAdminLog) {
+    return null // ✅ Prevents rendering if admin is not logged in
+  }
   useEffect(() => {
     if (id) {
       fetchProduct(id)
@@ -44,13 +47,11 @@ const UpdateProduct = () => {
   const [newRating, setNewRating] = useState(1)
   const [newCount, setNewCount] = useState(1)
 
-
   useEffect(() => {
     // If product is found, set the form fields with its data
-   
-    
+
     if (product) {
-       console.log(product.rating.count);
+      console.log(product.rating.count)
       setNewTitle(product.title)
       setNewPrice(product.price)
       setNewCategory(product.category)
@@ -84,19 +85,6 @@ const UpdateProduct = () => {
       return // Don't proceed if rating is invalid
     }
 
-    // Dispatch the update action with the new values and the existing product id
-    // if (product) {
-    //   dispatch(updateProduct({
-    //     id: product.id,
-    //     title: newTitle,
-    //     price: newPrice,
-    //     category: newCategory,
-    //     description: newDescription,
-    //     image: newImage,
-    //     rating: { rate: newRating }
-    //   }))
-    //   navigate('/Home') // Redirect after update
-    // }
     const updatedProduct = {
       id: product.id,
       title: newTitle,
@@ -104,11 +92,7 @@ const UpdateProduct = () => {
       category: newCategory,
       description: newDescription,
       image: newImage,
-      rating: { rate: newRating 
-        ,
-    count: newCount
-        
-      },
+      rating: { rate: newRating, count: newCount },
     }
 
     fetch(`http://localhost:8080/api/products/${id}`, {
@@ -129,7 +113,6 @@ const UpdateProduct = () => {
         console.error(error)
       })
 
-    
     navigate('/Home')
   }
 
@@ -144,9 +127,9 @@ const UpdateProduct = () => {
       <div className="update-product-container">
         <div className="update-product-container-content">
           <div>
-            <label className='bb'>Title:</label>
+            <label className="bb">Title:</label>
             <input
-              className='newpdt-inp'
+              className="newpdt-inp"
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
@@ -155,9 +138,9 @@ const UpdateProduct = () => {
           </div>
 
           <div>
-            <label className='bb'>Price:</label>
+            <label className="bb">Price:</label>
             <input
-             className='newpdt-inp'
+              className="newpdt-inp"
               type="number"
               value={newPrice}
               onChange={(e) => setNewPrice(e.target.value)}
@@ -166,9 +149,9 @@ const UpdateProduct = () => {
           </div>
 
           <div>
-            <label className='bb'>Category:</label>
+            <label className="bb">Category:</label>
             <input
-             className='newpdt-inp'
+              className="newpdt-inp"
               type="text"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
@@ -177,9 +160,9 @@ const UpdateProduct = () => {
           </div>
 
           <div>
-            <label className='bb'>Description:</label>
+            <label className="bb">Description:</label>
             <textarea
-            className='newpdt-inp'
+              className="newpdt-inp"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
               placeholder="Enter product description"
@@ -187,9 +170,9 @@ const UpdateProduct = () => {
           </div>
 
           <div>
-            <label className='bb'>Image URL:</label>
+            <label className="bb">Image URL:</label>
             <input
-            className='newpdt-inp'
+              className="newpdt-inp"
               type="text"
               value={newImage}
               onChange={(e) => setNewImage(e.target.value)}
@@ -198,9 +181,9 @@ const UpdateProduct = () => {
           </div>
 
           <div>
-            <label className='bb'>Rating:</label>
+            <label className="bb">Rating:</label>
             <input
-             className='newpdt-inp'
+              className="newpdt-inp"
               type="number"
               value={newRating}
               onChange={(e) => setNewRating(Number(e.target.value))}
@@ -210,16 +193,16 @@ const UpdateProduct = () => {
           </div>
 
           <div>
-  <label className='bb'> Stock(Quantity):</label>
-  <input
-   className='newpdt-inp'
-    type="number"
-    value={newCount}
-    onChange={(e) => setNewCount(Number(e.target.value))}
-    min="0"
-    placeholder="Enter product stock count"
-  />
-</div>
+            <label className="bb"> Stock(Quantity):</label>
+            <input
+              className="newpdt-inp"
+              type="number"
+              value={newCount}
+              onChange={(e) => setNewCount(Number(e.target.value))}
+              min="0"
+              placeholder="Enter product stock count"
+            />
+          </div>
 
           <button className="save" onClick={handleSave}>
             Save

@@ -4,8 +4,18 @@ import './EditUser.css'
 
 const EditUser = () => {
   const navigate = useNavigate()
-  const [, dark, , ,, uname1, setUsername] = useOutletContext() // Get username from context
+  const [, dark, , , , uname1, setUsername] = useOutletContext() // Get username from context
 
+  const username = localStorage.getItem('username')
+  useEffect(() => {
+    if (!username) {
+      navigate('/') // redirect if not logged in
+    }
+  }, [username])
+
+       if (!username) {
+    return null // Don't render anything until redirect is done
+  }
   const [userData, setUserData] = useState({
     username: '',
     password: '',
@@ -14,7 +24,7 @@ const EditUser = () => {
     address: '',
     isAdmin: false,
   })
-// console.log(uname1);
+  // console.log(uname1);
 
   useEffect(() => {
     // Fetch user data from the server based on the username (uname1)
@@ -38,9 +48,9 @@ const EditUser = () => {
     if (uname1) {
       fetchUserData() // Fetch user data if a valid username is available
     } else {
-      console.log('username not found');
-      
-      navigate('/Home') // Redirect if username is not found
+      console.log('username not found')
+
+      // navigate('/Home') // Redirect if username is not found
     }
   }, [uname1, navigate])
 
@@ -67,30 +77,36 @@ const EditUser = () => {
     if (!userData.phone.trim()) errorMessages.push('Phone number is required.')
     if (!userData.email.trim()) errorMessages.push('Email is required.')
     if (!userData.address.trim()) errorMessages.push('Address is required.')
-  
+
     if (errorMessages.length > 0) {
       alert(errorMessages.join('\n'))
       return
     }
-  
+
     try {
       // Fetch user ID using username
-      const userResponse = await fetch(`http://localhost:8080/api/users/${uname1}`)
+      const userResponse = await fetch(
+        `http://localhost:8080/api/users/${uname1}`
+      )
       if (!userResponse.ok) {
         throw new Error('User not found')
       }
       const user = await userResponse.json()
-  
+
       // Update user details
-      const response = await fetch(`http://localhost:8080/api/users/${user.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      })
-  
-      if (response.status === 409) { // Check for username or email conflict
+      const response = await fetch(
+        `http://localhost:8080/api/users/${user.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        }
+      )
+
+      if (response.status === 409) {
+        // Check for username or email conflict
         const result = await response.json()
         if (result.email) {
           alert('Email already exists. Please choose another email.')
@@ -99,11 +115,11 @@ const EditUser = () => {
         }
         return
       }
-  
+
       if (!response.ok) {
         throw new Error('Failed to update user')
       }
-  
+
       const updatedUser = await response.json()
       localStorage.setItem('username', userData.username)
       setUsername(userData.username)
