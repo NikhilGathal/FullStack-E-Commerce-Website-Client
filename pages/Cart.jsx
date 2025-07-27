@@ -9,7 +9,6 @@ import {
   removeallCartItem,
 } from '../store/slices/cartSlice'
 import { Link, useNavigate, useOutletContext } from 'react-router-dom'
-import { updateProductStock } from '../store/slices/productsSlice'
 
 export default function Cart() {
   const existingAdmin = JSON.parse(localStorage.getItem('Admin')) || {}
@@ -177,12 +176,6 @@ export default function Cart() {
                             method: 'PUT',
                           }
                         )
-                        //  dispatch(
-                        //     updateProductStock({
-                        //       productId: item.id,
-                        //       delta: -item.quantity,
-                        //     })
-                        //   )
                       }
 
                       const response = await fetch(

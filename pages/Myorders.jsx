@@ -74,12 +74,13 @@ function Myorders() {
     )
     if (!confirm) return
 
-    setIsCancelling(true)
+    
     const emailSentKey = `cancelEmailSent_${orderId}`
     if (localStorage.getItem(emailSentKey)) {
       console.log('Email for this cancelled order already sent.')
       return
     }
+    setIsCancelling(true)
 
     try {
       const res = await fetch(
@@ -92,12 +93,12 @@ function Myorders() {
       if (res.ok) {
         
 
-        // await sendCancelOrderEmail
-        // ({
-        //   username,
-        //   order_Id: orderId,
-        //   cartItems: orderItems,
-        // }) // ✅ Mark email as sent
+        await sendCancelOrderEmail
+        ({
+          username,
+          order_Id: orderId,
+          cartItems: orderItems,
+        }) // ✅ Mark email as sent
 
         localStorage.setItem(emailSentKey, 'true') // ✅ Remove cancelled order from state
 
