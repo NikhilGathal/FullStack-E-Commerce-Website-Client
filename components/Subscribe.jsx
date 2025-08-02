@@ -11,16 +11,6 @@ const Subscribe = ({ id }) => {
   const [emailValidationError, setEmailValidationError] = useState('') // State for email validation error
 
   const navigate = useNavigate()
-  const isAdminLog = localStorage.getItem('isadminlog') === 'true'
-  useEffect(() => {
-    if (!isAdminLog) {
-      navigate('/')
-    }
-  }, [isAdminLog])
-
-  if (!isAdminLog) {
-    return null // ✅ Prevents rendering if admin is not logged in
-  }
   // Email validation regex pattern (simple version)
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
