@@ -70,6 +70,16 @@
   color: var(--text-color);
 }
 
+@media(max-width :460px)
+{
+  .cat-container {
+  
+  padding-right: 0;
+  padding-left: 0;
+  
+}
+}
+
 /* Grid Styles */
 .cat-gridc {
   display: grid;

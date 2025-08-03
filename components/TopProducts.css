@@ -166,6 +166,22 @@
     background-color: #898989;
   }
   
+  @media(max-width:460px)
+{
+  .product-card .image-section img {
+  max-width: 130px;
+}
+.product-card .details-section .rating svg {
+  margin-top: 18px;
+}
+ .product-card .details-section {
+    min-width: 190px;
+    min-height: 140px;
+  }
+  .product-card .details-section button {
+  margin-top: 2rem;
+}
+}
   
   @media (min-width: 640px) {
     .grid {

@@ -88,6 +88,13 @@
     min-height: 264px; /* Minimum height */
     
   }
+    @media (max-width:460px)
+  {
+      .testimonial-card-body {
+    min-width: 240px; /* Minimum width */
+    min-height: 254px; /* Minimum height */
+  }
+  }
   
   .testimonial-img {
     margin-bottom: 1rem;

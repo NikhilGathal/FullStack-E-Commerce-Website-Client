@@ -85,6 +85,13 @@
   margin-top: -12px;
 }
 
+@media(max-width:460px)
+{
+  .hero-container { 
+    padding-inline: 16px;
+  }
+}
+
 .order-now-button:hover {
   color: var(--text-color);
   background-color: #898989;
