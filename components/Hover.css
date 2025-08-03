@@ -115,54 +115,30 @@
 
 @media  (max-width: 440px) {
   .suggestion-box {
-    top: 22px !important;
-    left: -6px !important;
-    padding-inline: 5px !important;
-    font-size: 9px !important ;
+    top: 20px !important;
+    left: -14px !important;
+    padding-inline: 2.7px !important;
+    font-size: 10px !important ;
   }
   .suggestion-box p 
   {
-    margin: 5px;
-    font-size: 5.5px !important ;
+    margin: 1px;
+    font-size: 10px !important ;
   }
   .suggestion-box-home {
     top: 22px !important;
-    left: 4px !important;
-    padding-inline: 5px !important;
-    font-size: 9px !important ;
+    left: -8.8px !important;
+    padding-inline: 1.5px !important;
+    font-size: 12px !important ;
   }
   .suggestion-box-home p 
   {
-    margin: 5px;
-    font-size: 5.5px !important ;
+    margin: 1px;
+    font-size: 10px !important ;
   }
 }
 
-@media  (max-width: 435px) {
-  .suggestion-box {
-    top: 18px !important;
-    left: -6px !important;
-    padding-inline:7.7px !important;
-    font-size: 9px !important;
-  }
-  .suggestion-box p 
-  {
-    margin: 5px;
-    font-size: 4.5px !important ;
-  }
 
-  .suggestion-box-home {
-    top: 18px !important;
-    left: -1px !important;
-    padding-inline:7.7px !important;
-    font-size: 9px !important;
-  }
-  .suggestion-box-home p 
-  {
-    margin: 5px;
-    font-size: 4.5px !important ;
-  }
-}
 
 @media (max-width: 1024px) {
   .suggestion-box {

@@ -1144,12 +1144,12 @@ select option:hover {
   }
 }
 
-@media (max-width: 437px) {
+@media (max-width: 440px) {
   .suggestion-box-log {
     display: none;
     position: absolute;
-    left: -13px;
-    top: 14px;
+    left: -7px;
+    top: 18px;
     padding-inline: 11px;
   }
   .suggestion-box-log p {
