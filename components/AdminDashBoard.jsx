@@ -180,7 +180,7 @@ function AdminDashBoard() {
                     </div>
                     <div className="amp grid-item rating-column">
                       {rating > 0 ? (
-                        <span
+                        <span className='stars'
                           style={{
                             color: dark ? 'gold' : '#ff6340',
                             

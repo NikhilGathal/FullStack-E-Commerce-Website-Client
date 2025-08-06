@@ -123,39 +123,6 @@ export const fetchProductdata = () => (dispatch) => {
         dispatch(updateAllProducts(data));
       } else {
         // <--- ✅ Move else to same line with the closing brace of if
-        console.log('No data in the database, trying external API...');
-
-        fetch('https://fakestoreapi.com/products')
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('External API returned a non-OK status');
-            }
-            return res.json();
-          })
-          .then((externalData) => {
-            console.log('Data fetched from external API:', externalData);
-            dispatch(updateAllProducts(externalData));
-
-            // Send to backend
-            return fetch('http://localhost:8080/api/products/saveall', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(externalData),
-            });
-          })
-          .then((response) => {
-            if (response && response.ok) {
-              console.log('External data saved to the backend successfully');
-            } else {
-              console.error('Failed to save external data to the backend');
-            }
-          })
-          .catch((error) => {
-            console.error('External API failed or server is down:', error);
-            console.log('Falling back to local hardcoded data');
-
             dispatch(updateAllProducts(productsList));
 
             fetch('http://localhost:8080/api/products/saveall', {
@@ -174,8 +141,7 @@ export const fetchProductdata = () => (dispatch) => {
               })
               .catch((err) => {
                 console.error('Error while sending local fallback data to backend:', err);
-              });
-          });
+              });       
       }
     })
 }

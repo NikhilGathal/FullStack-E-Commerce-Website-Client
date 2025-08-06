@@ -4,11 +4,13 @@ import { FaStar } from 'react-icons/fa';
 import './TopProducts.css';
 import { Link, useOutletContext } from 'react-router-dom';
 import AOS from 'aos'; // Import AOS
-
+import c from '../assets/3.jpg'
+import g from '../assets/7.jpg'
+import t from '../assets/20.jpg'
 const ProductsData = [
   {
     id: 3,
-    img: 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg',
+    img: c,
     title: 'Mens Cotton Jacket',
     description:
       'Great outerwear jackets for Spring/Autumn/Winter, suitable for many occasions...',
@@ -20,7 +22,7 @@ const ProductsData = [
   },
   {
     id: 7,
-    img: 'https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg',
+    img: g,
     title: 'White Gold Plated Princess',
     description:
       "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her...",
@@ -32,7 +34,7 @@ const ProductsData = [
   },
   {
     id: 20,
-    img: 'https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg',
+    img: t,
     title: 'DANVOUY Womens T Shirt Casual Cotton Short',
     description:
       '95% Cotton, 5% Spandex. Features: Casual, Short Sleeve, Letter Print, V-Neck...',

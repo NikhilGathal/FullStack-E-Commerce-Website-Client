@@ -169,7 +169,7 @@
     border: 2px solid;
   }
 }
-.grid-item span{
+.grid-item .stars{
   font-size: 30px;
 }
 
